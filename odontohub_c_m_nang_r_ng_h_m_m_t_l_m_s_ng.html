@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OdontoHub — Hệ Thống Tổng Hợp Kiến Thức Răng Hàm Mặt Lâm Sàng</title>
+    <!-- Tải Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tải font chữ Inter tối ưu hiển thị tiếng Việt -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        medical: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                        },
+                        tealmed: {
+                            50: '#f0fdfa',
+                            100: '#ccfbf1',
+                            600: '#0d9488',
+                            700: '#0f766e',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Tùy chỉnh thanh cuộn mượt và ẩn thanh cuộn ngang cho dải filter trên mobile */
+        html { scroll-behavior: smooth; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-medical-100 selection:text-medical-800">
+
+    <!-- ==================== HEADER / THANH ĐIỀU HƯỚNG ==================== -->
+    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo & Tên hệ thống -->
+                <a href="#" class="flex items-center gap-3 group">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-medical-600 to-tealmed-600 flex items-center justify-center text-white shadow-md shadow-medical-600/20 group-hover:scale-105 transition-transform">
+                        <!-- Icon Răng hàm tối giản -->
+                        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2C9.5 2 7.5 3.5 6 3.5C4 3.5 3 5.5 3 8C3 11.5 5 14 5.5 18C6 20.5 7 22 8.5 22C10 22 10.5 18.5 12 18.5C13.5 18.5 14 22 15.5 22C17 22 18 20.5 18.5 18C19 14 21 11.5 21 8C21 5.5 20 3.5 18 3.5C16.5 3.5 14.5 2 12 2Z"/>
+                            <path d="M8.5 8C9.5 9 11 9.5 12 9.5C13 9.5 14.5 9 15.5 8" stroke-opacity="0.7"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <span class="text-xl font-extrabold tracking-tight text-slate-900">Odonto<span class="text-medical-600">Hub</span></span>
+                        <span class="hidden sm:block text-[11px] font-medium text-slate-500 uppercase tracking-wider">Cẩm nang Răng Hàm Mặt Lâm sàng</span>
+                    </div>
+                </a>
+
+                <!-- Menu điều hướng (Desktop) -->
+                <nav class="hidden md:flex items-center gap-7 text-sm font-medium text-slate-600">
+                    <a href="#chuyen-nganh" class="hover:text-medical-600 transition-colors">Chuyên ngành</a>
+                    <a href="#danh-sach-bai" class="hover:text-medical-600 transition-colors">Kho bài giảng</a>
+                    <button onclick="openSampleLesson('pell-gregory')" class="hover:text-medical-600 transition-colors flex items-center gap-1.5">
+                        <span>Sơ đồ mẫu</span>
+                        <span class="px-1.5 py-0.5 text-[10px] font-bold bg-tealmed-100 text-tealmed-700 rounded-md">SVG</span>
+                    </button>
+                    <button onclick="openToast('Hệ thống đang đồng bộ danh mục giáo trình Y Hà Nội, Y Dược TP.HCM & Peterson\'s Principles.')" class="hover:text-medical-600 transition-colors">Tài liệu gốc</button>
+                </nav>
+
+                <!-- Nút hành động / Quản trị -->
+                <div class="flex items-center gap-2.5">
+                    <button onclick="openAdminModal()" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold text-white bg-medical-600 hover:bg-medical-700 shadow-sm shadow-medical-600/20 transition-all active:scale-95">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                        </svg>
+                        <span class="hidden sm:inline">Đóng góp / Quản trị</span>
+                        <span class="sm:hidden">Quản trị</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ==================== HERO SECTION & THANH TÌM KIẾM TRUNG TÂM ==================== -->
+    <section class="relative overflow-hidden bg-gradient-to-b from-medical-50/90 via-white to-slate-50 pt-10 pb-12 sm:pt-14 sm:pb-16 border-b border-slate-200/70">
+        <!-- Họa tiết nền y khoa nhẹ -->
+        <div class="absolute inset-0 pointer-events-none opacity-40" style="background-image: radial-gradient(#0284c7 0.75px, transparent 0.75px); background-size: 24px 24px;"></div>
+
+        <div class="relative max-w-4xl mx-auto px-4 sm:px-6 text-center">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-medical-200 text-medical-700 text-xs font-semibold shadow-sm mb-5">
+                <span class="w-2 h-2 rounded-full bg-tealmed-600 animate-pulse"></span>
+                <span>Chuẩn hóa từ Giáo trình Đại học & Y văn Quốc tế</span>
+            </div>
+
+            <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight mb-4">
+                Hệ Thống Kiến Thức Cốt Lõi <br class="hidden sm:inline" />
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-medical-700 to-tealmed-600">Răng Hàm Mặt Trực Quan</span>
+            </h1>
+
+            <p class="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto mb-8 leading-relaxed">
+                Tổng hợp tinh gọn từng chương sách chuyên ngành dưới dạng <strong>sơ đồ cây quyết định, bảng phân loại lâm sàng</strong> và <strong>câu hỏi lượng giá nhanh</strong> giúp tra cứu tức thì.
+            </p>
+
+            <!-- Ô TÌM KIẾM REAL-TIME LỚN -->
+            <div class="relative max-w-2xl mx-auto">
+                <div class="relative flex items-center bg-white rounded-2xl shadow-lg shadow-slate-200/70 border-2 border-slate-200 focus-within:border-medical-600 transition-all">
+                    <div class="pl-4 sm:pl-5 text-slate-400">
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                        </svg>
+                    </div>
+                    <input 
+                        type="text" 
+                        id="searchInput" 
+                        oninput="handleSearch(this.value)"
+                        placeholder="Tìm bài học, phân loại, thủ thuật (vd: Pell & Gregory, Nội nha, Vạt nha chu)..." 
+                        class="w-full py-3.5 sm:py-4 px-3 sm:px-4 text-sm sm:text-base text-slate-800 placeholder-slate-400 bg-transparent focus:outline-none rounded-2xl"
+                    >
+                    <button 
+                        id="clearSearchBtn" 
+                        onclick="clearSearch()" 
+                        class="hidden pr-4 text-slate-400 hover:text-slate-600"
+                        title="Xóa tìm kiếm">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Từ khóa gợi ý nhanh -->
+                <div class="mt-3.5 flex flex-wrap items-center justify-center gap-2 text-xs">
+                    <span class="text-slate-500 font-medium">Tra cứu nhanh:</span>
+                    <button onclick="quickSearch('Pell & Gregory')" class="px-2.5 py-1 rounded-lg bg-white hover:bg-medical-50 text-slate-600 hover:text-medical-700 border border-slate-200 transition-colors">Phân loại Pell & Gregory</button>
+                    <button onclick="quickSearch('Sửa soạn ống tủy')" class="px-2.5 py-1 rounded-lg bg-white hover:bg-medical-50 text-slate-600 hover:text-medical-700 border border-slate-200 transition-colors">Sửa soạn ống tủy</button>
+                    <button onclick="quickSearch('Vạt nha chu')" class="px-2.5 py-1 rounded-lg bg-white hover:bg-medical-50 text-slate-600 hover:text-medical-700 border border-slate-200 transition-colors">Vạt nha chu</button>
+                    <button onclick="quickSearch('Phục hình cố định')" class="px-2.5 py-1 rounded-lg bg-white hover:bg-medical-50 text-slate-600 hover:text-medical-700 border border-slate-200 transition-colors">Sửa soạn cùi răng</button>
+                    <button onclick="quickSearch('Implant')" class="px-2.5 py-1 rounded-lg bg-white hover:bg-medical-50 text-slate-600 hover:text-medical-700 border border-slate-200 transition-colors">Cấy ghép Implant</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== BỘ LỌC NHANH THEO CHUYÊN NGÀNH (FILTER TABS) ==================== -->
+    <div class="sticky top-16 z-30 bg-white/95 backdrop-blur border-b border-slate-200 shadow-xs">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div id="specialtyTabs" class="flex items-center gap-2 py-3 overflow-x-auto no-scrollbar">
+                <!-- Các tab được render tự động bằng JS để đồng bộ trạng thái active -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== NỘI DUNG CHÍNH ==================== -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-14">
+
+        <!-- KHU VỰC 1: DANH SÁCH CÁC CHUYÊN NGÀNH CHÍNH (GRID CARDS) -->
+        <section id="chuyen-nganh">
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-6 gap-2">
+                <div>
+                    <h2 class="text-xl sm:text-2xl font-bold text-slate-900">Phân môn & Chuyên ngành Răng Hàm Mặt</h2>
+                    <p class="text-sm text-slate-500 mt-1">Chọn một chuyên ngành để lọc nhanh các bài giảng đã được hệ thống hóa từ giáo trình.</p>
+                </div>
+                <span id="specialtySummaryBadge" class="text-xs font-semibold text-medical-700 bg-medical-50 px-3 py-1.5 rounded-lg border border-medical-100 self-start sm:self-auto">
+                    7 Chuyên ngành cốt lõi
+                </span>
+            </div>
+
+            <div id="specialtiesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                <!-- Render bằng JavaScript -->
+            </div>
+        </section>
+
+        <!-- KHU VỰC 2: DANH SÁCH BÀI GIẢNG CHI TIẾT / KẾT QUẢ TÌM KIẾM -->
+        <section id="danh-sach-bai" class="pt-4 border-t border-slate-200">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-3">
+                <div>
+                    <h2 class="text-xl sm:text-2xl font-bold text-slate-900 flex items-center gap-2.5">
+                        <span id="lessonsSectionTitle">Bài giảng & Sơ đồ Lâm sàng</span>
+                        <span id="lessonCountBadge" class="px-2.5 py-0.5 text-xs font-bold rounded-full bg-medical-600 text-white">0</span>
+                    </h2>
+                    <p id="lessonsSectionSubtitle" class="text-sm text-slate-500 mt-1">Bấm vào từng bài học để xem tóm tắt kiến thức, sơ đồ SVG minh họa và làm trắc nghiệm nhanh.</p>
+                </div>
+
+                <!-- Bộ lọc phụ: chỉ hiện bài có sơ đồ SVG -->
+                <label class="inline-flex items-center gap-2 text-sm font-medium text-slate-700 bg-white px-3.5 py-2 rounded-xl border border-slate-200 cursor-pointer hover:bg-slate-50 select-none self-start">
+                    <input type="checkbox" id="svgOnlyCheckbox" onchange="applyFilters()" class="rounded text-medical-600 focus:ring-medical-500 w-4 h-4">
+                    <span>Chỉ hiện bài có Sơ đồ SVG tương tác</span>
+                </label>
+            </div>
+
+            <!-- Grid danh sách bài học -->
+            <div id="lessonsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <!-- Render bằng JavaScript -->
+            </div>
+
+            <!-- Trạng thái không tìm thấy kết quả -->
+            <div id="emptyState" class="hidden bg-white rounded-2xl border border-slate-200 p-10 text-center max-w-lg mx-auto my-6">
+                <div class="w-14 h-14 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                </div>
+                <h3 class="text-base font-bold text-slate-800 mb-1">Không tìm thấy bài giảng phù hợp</h3>
+                <p class="text-sm text-slate-500 mb-4">Thử tìm với từ khóa ngắn gọn hơn hoặc đặt lại bộ lọc chuyên ngành.</p>
+                <button onclick="resetAllFilters()" class="px-4 py-2 rounded-xl bg-medical-600 text-white text-sm font-semibold hover:bg-medical-700 transition-colors">
+                    Xem tất cả bài giảng
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer class="bg-white border-t border-slate-200 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-slate-500">
+            <div class="flex items-center gap-2">
+                <span class="font-bold text-slate-800">OdontoHub</span>
+                <span>— Hệ thống học tập & tra cứu Răng Hàm Mặt chuẩn hóa.</span>
+            </div>
+            <div class="text-xs text-slate-400">
+                Thiết kế hỗ trợ cộng tác đa giảng viên & cập nhật trực tiếp từ tài liệu y khoa.
+            </div>
+        </div>
+    </footer>
+
+    <!-- ==================== MODAL XEM TRƯỚC BÀI GIẢNG MẪU (CÓ SƠ ĐỒ SVG & QUIZ) ==================== -->
+    <div id="lessonModal" class="fixed inset-0 z-50 hidden overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <!-- Nền tối mờ -->
+        <div class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs transition-opacity" onclick="closeLessonModal()"></div>
+
+        <div class="flex min-h-full items-center justify-center p-3 sm:p-6">
+            <div class="relative w-full max-w-4xl bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden my-4">
+                <!-- Thanh tiêu đề Modal -->
+                <div class="flex items-start justify-between gap-4 px-5 sm:px-7 py-4 bg-slate-50 border-b border-slate-200">
+                    <div>
+                        <div class="flex flex-wrap items-center gap-2 mb-1.5">
+                            <span id="modalSpecialtyTag" class="px-2.5 py-0.5 text-xs font-semibold rounded-md bg-medical-100 text-medical-800">Phẫu thuật Miệng & Hàm Mặt</span>
+                            <span id="modalSourceTag" class="text-xs text-slate-500 font-medium">Nguồn: Phẫu thuật trong miệng - ĐH Y Hà Nội</span>
+                        </div>
+                        <h3 id="modalTitle" class="text-lg sm:text-xl font-extrabold text-slate-900">Tiêu đề bài giảng</h3>
+                    </div>
+                    <button onclick="closeLessonModal()" class="p-2 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-200/70 transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Nội dung chi tiết bài giảng -->
+                <div id="modalBody" class="p-5 sm:p-7 space-y-6 max-h-[80vh] overflow-y-auto">
+                    <!-- Được bơm động từ JS tùy theo bài học được chọn -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== MODAL HƯỚNG DẪN CỘNG TÁC / QUẢN TRỊ ==================== -->
+    <div id="adminModal" class="fixed inset-0 z-50 hidden overflow-y-auto">
+        <div class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs" onclick="closeAdminModal()"></div>
+        <div class="flex min-h-full items-center justify-center p-4">
+            <div class="relative w-full max-w-xl bg-white rounded-2xl shadow-2xl border border-slate-200 p-6 sm:p-7">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-bold text-slate-900">Cơ chế Cộng tác & Cập nhật Bài giảng</h3>
+                    <button onclick="closeAdminModal()" class="p-1.5 rounded-lg text-slate-400 hover:bg-slate-100">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                    </button>
+                </div>
+                <div class="space-y-3 text-sm text-slate-600 leading-relaxed">
+                    <p>Trang web này được kiến trúc theo dạng <strong>Dữ liệu tách biệt Giao diện</strong>, cho phép nhiều bác sĩ/giảng viên cùng đóng góp bài mới:</p>
+                    <div class="p-3.5 rounded-xl bg-medical-50 border border-medical-100 text-slate-700 space-y-2">
+                        <p><strong>1. Quy trình biên soạn bằng AI:</strong> Tải chương sách PDF lên Gemini/Claude, xuất ra cấu trúc JSON/HTML bài giảng kèm mã sơ đồ SVG.</p>
+                        <p><strong>2. Đồng bộ đa tài khoản (GitHub):</strong> Mời các thành viên vào chung kho lưu trữ GitHub. Mỗi người phụ trách 1 chuyên ngành (Nội nha, Nha chu, Phục hình...) và đẩy bài lên nhánh chung.</p>
+                        <p><strong>3. Tự động xuất bản:</strong> Kết nối GitHub với Vercel/Netlify để website tự cập nhật ngay sau mỗi lần thêm bài mới.</p>
+                    </div>
+                </div>
+                <div class="mt-6 flex justify-end">
+                    <button onclick="closeAdminModal()" class="px-4 py-2 rounded-xl bg-medical-600 text-white text-sm font-semibold hover:bg-medical-700">Đã hiểu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== THÔNG BÁO TOAST NHẸ ==================== -->
+    <div id="toastBox" class="fixed bottom-5 right-5 z-50 hidden max-w-sm bg-slate-900 text-white text-sm px-4 py-3 rounded-xl shadow-lg border border-slate-700 flex items-center gap-3">
+        <span class="w-2 h-2 rounded-full bg-teal-400 shrink-0"></span>
+        <span id="toastMessage">Thông báo</span>
+    </div>
+
+    <!-- ==================== JAVASCRIPT XỬ LÝ DỮ LIỆU & TƯƠNG TÁC ==================== -->
+    <script>
+        // 1. DỮ LIỆU CÁC CHUYÊN NGÀNH RĂNG HÀM MẶT
+        const SPECIALTIES = [
+            {
+                id: 'all',
+                name: 'Tất cả chuyên ngành',
+                enName: 'All Specialties',
+                description: 'Toàn bộ hệ thống bài giảng tổng hợp từ các phân môn Răng Hàm Mặt.',
+                color: 'bg-medical-600',
+                icon: `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>`
+            },
+            {
+                id: 'omfs',
+                name: 'Phẫu thuật Miệng & Hàm Mặt',
+                enName: 'Oral & Maxillofacial Surgery',
+                description: 'Nhổ răng khôn lệch ngầm, gây tê vùng, chấn thương hàm mặt, nang & u vùng hàm mặt, cấy ghép Implant.',
+                color: 'bg-sky-600',
+                icon: `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.121 14.121L19 19m-7-7l7-7m-7 7l-2.879 2.879M12 12L9.121 9.121m0 5.758a3 3 0 10-4.243 4.243 3 3 0 004.243-4.243zm0-5.758a3 3 0 10-4.243-4.243 3 3 0 004.243 4.243z"/></svg>`
+            },
+            {
+                id: 'endo',
+                name: 'Chữa răng & Nội nha',
+                enName: 'Operative Dentistry & Endodontics',
+                description: 'Sâu răng, phục hồi composite, chẩn đoán bệnh lý tủy - vùng quanh chóp, tạo hình và trám bít ống tủy.',
+                color: 'bg-teal-600',
+                icon: `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>`
+            },
+            {
+                id: 'prosth',
+                name: 'Phục hình Răng',
+                enName: 'Prosthodontics',
+                description: 'Nguyên tắc sửa soạn cùi răng, mão/cầu răng cố định, phục hình tháo lắp bán phần & toàn hàm, khớp cắn.',
+                color: 'bg-indigo-600',
+                icon: `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>`
+            },
+            {
+                id: 'perio',
+                name: 'Nha chu học',
+                enName: 'Periodontology',
+                description: 'Phân loại bệnh nha chu 2017, xử lý mặt gốc răng, phẫu thuật vạt nha chu, tái tạo mô có hướng dẫn (GTR).',
+                color: 'bg-emerald-600',
+                icon: `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>`
+            },
+            {
+                id: 'ortho',
+                name: 'Chỉnh hình Răng Mặt',
+                enName: 'Orthodontics',
+                description: 'Phân tích phim sọ nghiêng Cephalometric, phân loại sai khớp cắn Angle, cơ sinh học di chuyển răng.',
+                color: 'bg-cyan-600',
+                icon: `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>`
+            },
+            {
+                id: 'pedo',
+                name: 'Răng Trẻ Em & Dự phòng',
+                enName: 'Pediatric & Preventive Dentistry',
+                description: 'Kiểm soát hành vi, điều trị tủy răng sữa (lấy tủy buồng), bộ giữ khoảng và dự phòng sâu răng sớm.',
+                color: 'bg-amber-600',
+                icon: `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>`
+            },
+            {
+                id: 'patho',
+                name: 'Bệnh học Miệng & CĐHA',
+                enName: 'Oral Pathology & Radiology',
+                description: 'Chẩn đoán hình ảnh CBCT, tổn thương thấu quang/cản quang xương hàm, tổn thương niêm mạc miệng.',
+                color: 'bg-slate-700',
+                icon: `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>`
+            }
+        ];
+
+        // 2. DỮ LIỆU CÁC BÀI GIẢNG MẪU (CÓ THỂ MỞ RỘNG DỄ DÀNG)
+        const LESSONS = [
+            {
+                id: 'pell-gregory',
+                specialtyId: 'omfs',
+                title: 'Phân loại răng khôn hàm dưới mọc lệch (Pell & Gregory và Winter)',
+                summary: 'Đánh giá mức độ khó phẫu thuật nhổ răng 8 hàm dưới dựa trên tương quan bờ trước cành lên xương hàm dưới, mặt phẳng nhai răng 7 và trục răng.',
+                source: 'Phẫu thuật trong miệng — ĐH Y Hà Nội (Chương 4)',
+                readTime: '6 phút đọc',
+                hasSvg: true,
+                hasTable: true,
+                hasQuiz: true,
+                keywords: ['răng khôn', 'răng 8', 'pell & gregory', 'winter', 'nhổ răng lệch', 'cành lên'],
+                featured: true
+            },
+            {
+                id: 'endo-shaping',
+                specialtyId: 'endo',
+                title: 'Nguyên tắc cơ học và sinh học trong sửa soạn ống tủy (Schilder)',
+                summary: '5 nguyên tắc cơ học tạo hình ống tủy thuôn liên tục và 4 mục tiêu sinh học giúp làm sạch hệ thống ống tủy mà không đẩy mùn ngà qua chóp.',
+                source: 'Nội nha Lâm sàng — Cohen\'s Pathways of the Pulp',
+                readTime: '8 phút đọc',
+                hasSvg: true,
+                hasTable: true,
+                hasQuiz: true,
+                keywords: ['sửa soạn ống tủy', 'nội nha', 'schilder', 'trâm xoay', 'chiều dài làm việc'],
+                featured: true
+            },
+            {
+                id: 'perio-flap',
+                specialtyId: 'perio',
+                title: 'Chỉ định và thiết kế các loại vạt nha chu (Vạt Widman cải tiến & Vạt đẩy về phía chóp)',
+                summary: 'So sánh đường rạch nội khe, đường rạch vát trong, bảo tồn nhú lợi và chỉ định từng loại vạt trong phẫu thuật túi nha chu.',
+                source: 'Nha chu học Lâm sàng — Carranza\'s Clinical Periodontology',
+                readTime: '7 phút đọc',
+                hasSvg: true,
+                hasTable: true,
+                hasQuiz: true,
+                keywords: ['vạt nha chu', 'widman', 'túi nha chu', 'đường rạch vát trong', 'phẫu thuật nha chu'],
+                featured: true
+            },
+            {
+                id: 'prosth-prep',
+                specialtyId: 'prosth',
+                title: 'Nguyên tắc sinh học và cơ học khi sửa soạn cùi răng phục hình cố định',
+                summary: 'Độ thuôn lý tưởng (6° - 10°), chiều cao cùi tối thiểu, bảo tồn khoảng sinh học và lựa chọn đường hoàn tất (bờ vai, bờ xuôi, bờ cong).',
+                source: 'Phục hình răng cố định — Shillingburg',
+                readTime: '7 phút đọc',
+                hasSvg: true,
+                hasTable: true,
+                hasQuiz: true,
+                keywords: ['phục hình cố định', 'cùi răng', 'đường hoàn tất', 'mão răng', 'khoảng sinh học'],
+                featured: true
+            },
+            {
+                id: 'implant-bone',
+                specialtyId: 'omfs',
+                title: 'Phân loại mật độ xương hàm (Misch) và nguyên tắc ổn định sơ khởi trong Implant',
+                summary: 'Đặc điểm giải phẫu vùng xương D1, D2, D3, D4 và phác đồ khoan tạo hình tương ứng để đạt lực vặn tối ưu khi cấy ghép Implant.',
+                source: 'Cấy ghép Nha khoa — Carl E. Misch',
+                readTime: '6 phút đọc',
+                hasSvg: false,
+                hasTable: true,
+                hasQuiz: true,
+                keywords: ['implant', 'mật độ xương', 'misch', 'D1 D2 D3 D4', 'cấy ghép'],
+                featured: false
+            },
+            {
+                id: 'ortho-ceph',
+                specialtyId: 'ortho',
+                title: 'Các điểm mốc và góc đo cơ bản trên phim sọ nghiêng (Phân tích Steiner)',
+                summary: 'Ý nghĩa lâm sàng của các góc SNA, SNB, ANB, GoGn-SN và trục răng cửa trong chẩn đoán tương quan xương hạng I, II, III.',
+                source: 'Chỉnh hình Răng Mặt — Proffit Contemporary Orthodontics',
+                readTime: '9 phút đọc',
+                hasSvg: true,
+                hasTable: true,
+                hasQuiz: true,
+                keywords: ['chỉnh nha', 'phim sọ nghiêng', 'steiner', 'SNA SNB ANB', 'sai khớp cắn'],
+                featured: false
+            },
+            {
+                id: 'pedo-pulpotomy',
+                specialtyId: 'pedo',
+                title: 'Phác đồ điều trị tủy răng sữa: Che tủy gián tiếp, Lấy tủy buồng & Lấy tủy toàn phần',
+                summary: 'Tiêu chuẩn chẩn đoán tình trạng tủy răng sữa, lựa chọn vật liệu (MTA, Biodentine, Formocresol) và theo dõi tiêu chân răng sinh lý.',
+                source: 'Răng Trẻ Em — McDonald and Avery\'s Dentistry',
+                readTime: '5 phút đọc',
+                hasSvg: false,
+                hasTable: true,
+                hasQuiz: true,
+                keywords: ['răng trẻ em', 'lấy tủy buồng', 'răng sữa', 'MTA', 'che tủy'],
+                featured: false
+            },
+            {
+                id: 'patho-cysts',
+                specialtyId: 'patho',
+                title: 'Chẩn đoán phân biệt các tổn thương thấu quang quanh thân răng trên phim X-quang',
+                summary: 'Phân biệt Nang thân răng (Dentigerous cyst), U nguyên bào men (Ameloblastoma) và Nang sừng do răng (OKC) qua đặc điểm bờ viền và tiêu chân răng.',
+                source: 'Bệnh học Miệng & Hàm Mặt — Neville',
+                readTime: '8 phút đọc',
+                hasSvg: false,
+                hasTable: true,
+                hasQuiz: true,
+                keywords: ['bệnh học miệng', 'thấu quang', 'nang thân răng', 'u nguyên bào men', 'X-quang'],
+                featured: false
+            }
+        ];
+
+        // Trạng thái bộ lọc hiện tại
+        let currentSpecialty = 'all';
+        let currentSearchQuery = '';
+
+        // 3. KHỞI TẠO GIAO DIỆN KHI TẢI TRANG
+        document.addEventListener('DOMContentLoaded', () => {
+            renderSpecialtyTabs();
+            renderSpecialtiesGrid();
+            applyFilters();
+        });
+
+        // Render dải Filter Tabs ngang
+        function renderSpecialtyTabs() {
+            const container = document.getElementById('specialtyTabs');
+            container.innerHTML = SPECIALTIES.map(spec => {
+                const isActive = currentSpecialty === spec.id;
+                const count = spec.id === 'all' 
+                    ? LESSONS.length 
+                    : LESSONS.filter(l => l.specialtyId === spec.id).length;
+
+                return `
+                    <button 
+                        onclick="selectSpecialty('${spec.id}')"
+                        class="shrink-0 inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all ${
+                            isActive 
+                                ? 'bg-medical-600 text-white shadow-sm shadow-medical-600/20' 
+                                : 'bg-slate-100/80 text-slate-600 hover:bg-slate-200/70 hover:text-slate-900'
+                        }">
+                        <span>${spec.name}</span>
+                        <span class="px-1.5 py-0.2 rounded-md text-[11px] ${
+                            isActive ? 'bg-white/20 text-white' : 'bg-white text-slate-500'
+                        }">${count}</span>
+                    </button>
+                `;
+            }).join('');
+        }
+
+        // Render các thẻ Chuyên ngành (Grid Cards)
+        function renderSpecialtiesGrid() {
+            const grid = document.getElementById('specialtiesGrid');
+            // Bỏ mục 'all' khỏi danh sách card chuyên ngành
+            const actualSpecialties = SPECIALTIES.filter(s => s.id !== 'all');
+
+            grid.innerHTML = actualSpecialties.map(spec => {
+                const specLessons = LESSONS.filter(l => l.specialtyId === spec.id);
+                const isSelected = currentSpecialty === spec.id;
+
+                return `
+                    <div class="group bg-white rounded-2xl border ${isSelected ? 'border-medical-600 ring-2 ring-medical-600/15' : 'border-slate-200/90 hover:border-medical-300'} p-5 shadow-xs hover:shadow-md transition-all flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-start justify-between gap-3 mb-3.5">
+                                <div class="w-11 h-11 rounded-xl ${spec.color} text-white flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform">
+                                    ${spec.icon}
+                                </div>
+                                <span class="text-xs font-semibold px-2.5 py-1 rounded-lg bg-slate-100 text-slate-600">
+                                    ${specLessons.length} bài giảng
+                                </span>
+                            </div>
+
+                            <h3 class="text-base font-bold text-slate-900 group-hover:text-medical-700 transition-colors">
+                                ${spec.name}
+                            </h3>
+                            <p class="text-[11px] font-medium text-slate-400 uppercase tracking-wider mb-2">${spec.enName}</p>
+                            <p class="text-sm text-slate-600 line-clamp-2 mb-4 leading-relaxed">
+                                ${spec.description}
+                            </p>
+
+                            <!-- Danh sách bài học tiêu biểu trong chuyên ngành -->
+                            <div class="space-y-1.5 pt-3 border-t border-slate-100">
+                                <p class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Bài tiêu biểu:</p>
+                                ${specLessons.slice(0, 2).map(lesson => `
+                                    <button 
+                                        onclick="openSampleLesson('${lesson.id}')"
+                                        class="w-full text-left text-xs font-medium text-slate-700 hover:text-medical-600 flex items-start gap-1.5 py-1 rounded transition-colors">
+                                        <span class="text-medical-500 mt-0.5">▸</span>
+                                        <span class="line-clamp-1">${lesson.title}</span>
+                                    </button>
+                                `).join('')}
+                            </div>
+                        </div>
+
+                        <div class="mt-4 pt-3 border-t border-slate-100 flex justify-end">
+                            <button 
+                                onclick="selectSpecialtyAndScroll('${spec.id}')"
+                                class="text-xs font-bold text-medical-600 hover:text-medical-800 inline-flex items-center gap-1">
+                                <span>Lọc chuyên ngành này</span>
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Xử lý chọn chuyên ngành
+        function selectSpecialty(specId) {
+            currentSpecialty = specId;
+            renderSpecialtyTabs();
+            renderSpecialtiesGrid();
+            applyFilters();
+        }
+
+        function selectSpecialtyAndScroll(specId) {
+            selectSpecialty(specId);
+            document.getElementById('danh-sach-bai').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Xử lý tìm kiếm real-time
+        function handleSearch(val) {
+            currentSearchQuery = val.trim().toLowerCase();
+            const clearBtn = document.getElementById('clearSearchBtn');
+            if (currentSearchQuery.length > 0) {
+                clearBtn.classList.remove('hidden');
+            } else {
+                clearBtn.classList.add('hidden');
+            }
+            applyFilters();
+        }
+
+        function quickSearch(keyword) {
+            const input = document.getElementById('searchInput');
+            input.value = keyword;
+            handleSearch(keyword);
+            document.getElementById('danh-sach-bai').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function clearSearch() {
+            const input = document.getElementById('searchInput');
+            input.value = '';
+            handleSearch('');
+            input.focus();
+        }
+
+        function resetAllFilters() {
+            currentSpecialty = 'all';
+            document.getElementById('svgOnlyCheckbox').checked = false;
+            clearSearch();
+            renderSpecialtyTabs();
+            renderSpecialtiesGrid();
+            applyFilters();
+        }
+
+        // Hàm lọc tổng hợp & render danh sách bài học
+        function applyFilters() {
+            const svgOnly = document.getElementById('svgOnlyCheckbox').checked;
+
+            const filtered = LESSONS.filter(lesson => {
+                // 1. Lọc theo chuyên ngành
+                const matchSpec = currentSpecialty === 'all' || lesson.specialtyId === currentSpecialty;
+                
+                // 2. Lọc theo chế độ chỉ hiện bài có sơ đồ SVG
+                const matchSvg = !svgOnly || lesson.hasSvg;
+
+                // 3. Lọc theo từ khóa tìm kiếm (tên bài, tóm tắt, nguồn, keywords, tên chuyên ngành)
+                const specObj = SPECIALTIES.find(s => s.id === lesson.specialtyId);
+                const searchableText = [
+                    lesson.title,
+                    lesson.summary,
+                    lesson.source,
+                    specObj ? specObj.name : '',
+                    ...(lesson.keywords || [])
+                ].join(' ').toLowerCase();
+
+                const matchQuery = !currentSearchQuery || searchableText.includes(currentSearchQuery);
+
+                return matchSpec && matchSvg && matchQuery;
+            });
+
+            renderLessonsList(filtered);
+        }
+
+        function renderLessonsList(lessons) {
+            const grid = document.getElementById('lessonsGrid');
+            const emptyState = document.getElementById('emptyState');
+            const countBadge = document.getElementById('lessonCountBadge');
+            const titleEl = document.getElementById('lessonsSectionTitle');
+
+            countBadge.textContent = lessons.length;
+
+            const activeSpecObj = SPECIALTIES.find(s => s.id === currentSpecialty);
+            titleEl.textContent = currentSpecialty === 'all' 
+                ? 'Tất cả Bài giảng & Sơ đồ Lâm sàng' 
+                : `Chuyên ngành: ${activeSpecObj.name}`;
+
+            if (lessons.length === 0) {
+                grid.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+
+            grid.innerHTML = lessons.map(lesson => {
+                const spec = SPECIALTIES.find(s => s.id === lesson.specialtyId);
+                return `
+                    <article 
+                        onclick="openSampleLesson('${lesson.id}')"
+                        class="group bg-white rounded-2xl border border-slate-200/90 hover:border-medical-500 p-5 shadow-xs hover:shadow-md transition-all cursor-pointer flex flex-col justify-between">
+                        <div>
+                            <!-- Hàng tag trên cùng -->
+                            <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                                <span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-medical-50 text-medical-700 border border-medical-100">
+                                    ${spec ? spec.name : ''}
+                                </span>
+                                <span class="text-xs text-slate-400 font-medium flex items-center gap-1">
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                    ${lesson.readTime}
+                                </span>
+                            </div>
+
+                            <!-- Tiêu đề & Tóm tắt -->
+                            <h3 class="text-base sm:text-lg font-bold text-slate-900 group-hover:text-medical-600 transition-colors mb-2 leading-snug">
+                                ${lesson.title}
+                            </h3>
+                            <p class="text-sm text-slate-600 line-clamp-2 mb-4 leading-relaxed">
+                                ${lesson.summary}
+                            </p>
+                        </div>
+
+                        <!-- Chân thẻ: Nguồn sách & Huy hiệu trực quan -->
+                        <div class="pt-3.5 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2">
+                            <span class="text-xs text-slate-500 truncate max-w-[60%]" title="${lesson.source}">
+                                📖 ${lesson.source}
+                            </span>
+
+                            <div class="flex items-center gap-1.5">
+                                ${lesson.hasSvg ? `<span class="px-2 py-0.5 text-[11px] font-bold rounded bg-tealmed-50 text-tealmed-700 border border-tealmed-200">Sơ đồ SVG</span>` : ''}
+                                ${lesson.hasTable ? `<span class="px-2 py-0.5 text-[11px] font-semibold rounded bg-slate-100 text-slate-600">Bảng phân loại</span>` : ''}
+                                ${lesson.hasQuiz ? `<span class="px-2 py-0.5 text-[11px] font-semibold rounded bg-amber-50 text-amber-700 border border-amber-200">Quiz</span>` : ''}
+                            </div>
+                        </div>
+                    </article>
+                `;
+            }).join('');
+        }
+
+        // 4. MODAL XEM TRƯỚC BÀI GIẢNG MẪU (ĐẦY ĐỦ SƠ ĐỒ SVG + BẢNG + QUIZ CHẤM ĐIỂM)
+        function openSampleLesson(lessonId) {
+            const lesson = LESSONS.find(l => l.id === lessonId) || LESSONS[0];
+            const spec = SPECIALTIES.find(s => s.id === lesson.specialtyId);
+
+            document.getElementById('modalSpecialtyTag').textContent = spec ? spec.name : 'Chuyên ngành RHM';
+            document.getElementById('modalSourceTag').textContent = `Nguồn: ${lesson.source}`;
+            document.getElementById('modalTitle').textContent = lesson.title;
+
+            const modalBody = document.getElementById('modalBody');
+
+            // Nếu là bài Pell & Gregory -> Hiển thị đầy đủ sơ đồ SVG minh họa răng khôn hàm dưới
+            if (lesson.id === 'pell-gregory') {
+                modalBody.innerHTML = getPellGregoryTemplate();
+            } else {
+                // Các bài khác hiển thị khung cấu trúc chuẩn + lời nhắc đang đồng bộ từ PDF
+                modalBody.innerHTML = getGenericLessonTemplate(lesson);
+            }
+
+            document.getElementById('lessonModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLessonModal() {
+            document.getElementById('lessonModal').classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        // Template chi tiết mẫu cho bài Pell & Gregory (có vẽ trực tiếp SVG giải phẫu lâm sàng)
+        function getPellGregoryTemplate() {
+            return `
+                <!-- 1. Tóm tắt nguyên tắc cốt lõi -->
+                <div class="p-4 rounded-xl bg-medical-50/80 border border-medical-200/80">
+                    <h4 class="text-sm font-bold text-medical-900 uppercase tracking-wider mb-1.5">1. Nguyên tắc đánh giá lâm sàng & X-quang</h4>
+                    <p class="text-sm text-slate-700 leading-relaxed">
+                        Hệ thống <strong>Pell & Gregory (1933)</strong> đánh giá độ sâu và khoảng trống xương hàm dưới dành cho răng khôn (Răng 8) dựa trên phim toàn cảnh (Panorama) hoặc phim cận chóp chuẩn, kết hợp với <strong>Phân loại Winter</strong> (theo góc nghiêng trục răng) để tiên lượng đường mở xương và chia cắt thân/chân răng.
+                    </p>
+                </div>
+
+                <!-- 2. Sơ đồ SVG minh họa trực quan -->
+                <div class="border border-slate-200 rounded-2xl p-4 sm:p-5 bg-white">
+                    <div class="flex items-center justify-between mb-3">
+                        <h4 class="text-sm font-bold text-slate-900 uppercase tracking-wider">2. Sơ đồ minh họa tương quan giải phẫu (Pell & Gregory)</h4>
+                        <span class="text-xs font-semibold text-tealmed-700 bg-tealmed-50 px-2.5 py-1 rounded-md">Sơ đồ Vector trực quan</span>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Sơ đồ A: Theo chiều trước - sau (Loại I, II, III) -->
+                        <div class="bg-slate-50 rounded-xl p-3 border border-slate-200/70">
+                            <p class="text-xs font-bold text-center text-slate-700 mb-2">A. Tương quan bờ trước cành lên (Loại I - II - III)</p>
+                            <svg viewBox="0 0 320 170" class="w-full h-auto">
+                                <!-- Xương hàm dưới & cành lên -->
+                                <path d="M20,145 L210,145 Q245,145 260,115 L295,25 L250,25 L225,95 L20,95 Z" fill="#e2e8f0" stroke="#94a3b8" stroke-width="1.5"/>
+                                <!-- Đường bờ trước cành lên (nét đứt đỏ) -->
+                                <line x1="225" y1="20" x2="225" y2="155" stroke="#e11d48" stroke-width="2" stroke-dasharray="4,3"/>
+                                <text x="230" y="34" font-size="9" fill="#be123c" font-weight="bold">Bờ trước cành lên</text>
+
+                                <!-- Răng 7 (cố định) -->
+                                <rect x="115" y="65" width="38" height="32" rx="8" fill="#ffffff" stroke="#0284c7" stroke-width="2"/>
+                                <path d="M122,97 L118,132 L130,97 M138,97 L146,132 L149,97" fill="#ffffff" stroke="#0284c7" stroke-width="1.5"/>
+                                <text x="128" y="85" font-size="11" fill="#0369a1" font-weight="bold">R7</text>
+
+                                <!-- Minh họa Loại I (R8 nằm hoàn toàn phía trước bờ trước cành lên) -->
+                                <rect x="160" y="67" width="36" height="30" rx="8" fill="#ccfbf1" stroke="#0d9488" stroke-width="2"/>
+                                <text x="165" y="85" font-size="9.5" fill="#0f766e" font-weight="bold">Loại I</text>
+
+                                <!-- Minh họa Loại II (Một phần thân R8 nằm trong cành lên) -->
+                                <rect x="206" y="67" width="36" height="30" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="2" fill-opacity="0.85"/>
+                                <text x="210" y="85" font-size="9.5" fill="#b45309" font-weight="bold">Loại II</text>
+
+                                <!-- Chú thích đáy -->
+                                <text x="20" y="162" font-size="9" fill="#475569">• Loại I: Đủ khoảng gần-xa | Loại II: Khoảng hẹp | Loại III: Nằm hẳn trong cành lên</text>
+                            </svg>
+                        </div>
+
+                        <!-- Sơ đồ B: Theo chiều đứng / Độ sâu (Vị trí A, B, C) -->
+                        <div class="bg-slate-50 rounded-xl p-3 border border-slate-200/70">
+                            <p class="text-xs font-bold text-center text-slate-700 mb-2">B. Độ sâu so với mặt nhai & cổ răng 7 (Vị trí A - B - C)</p>
+                            <svg viewBox="0 0 320 170" class="w-full h-auto">
+                                <!-- Xương ổ răng -->
+                                <rect x="20" y="95" width="280" height="55" rx="6" fill="#e2e8f0" stroke="#94a3b8" stroke-width="1.5"/>
+                                
+                                <!-- Răng 7 chuẩn -->
+                                <rect x="55" y="55" width="42" height="40" rx="8" fill="#ffffff" stroke="#0284c7" stroke-width="2"/>
+                                <path d="M63,95 L59,135 L73,95 M82,95 L91,135 L94,95" fill="#ffffff" stroke="#0284c7" stroke-width="1.5"/>
+                                <text x="70" y="79" font-size="11" fill="#0369a1" font-weight="bold">R7</text>
+
+                                <!-- Đường mặt nhai R7 -->
+                                <line x1="35" y1="55" x2="295" y2="55" stroke="#0284c7" stroke-width="1.5" stroke-dasharray="4,3"/>
+                                <text x="225" y="50" font-size="9" fill="#0369a1" font-weight="bold">Mặt nhai R7</text>
+
+                                <!-- Đường cổ răng giải phẫu R7 -->
+                                <line x1="35" y1="95" x2="295" y2="95" stroke="#e11d48" stroke-width="1.5" stroke-dasharray="4,3"/>
+                                <text x="225" y="90" font-size="9" fill="#be123c" font-weight="bold">Đường cổ R7</text>
+
+                                <!-- Vị trí A -->
+                                <rect x="112" y="55" width="34" height="32" rx="7" fill="#ccfbf1" stroke="#0d9488" stroke-width="2"/>
+                                <text x="120" y="75" font-size="10" fill="#0f766e" font-weight="bold">A</text>
+
+                                <!-- Vị trí B -->
+                                <rect x="158" y="74" width="34" height="32" rx="7" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+                                <text x="166" y="94" font-size="10" fill="#b45309" font-weight="bold">B</text>
+
+                                <!-- Vị trí C -->
+                                <rect x="204" y="102" width="34" height="32" rx="7" fill="#fee2e2" stroke="#dc2626" stroke-width="2"/>
+                                <text x="212" y="122" font-size="10" fill="#b91c1c" font-weight="bold">C</text>
+
+                                <text x="20" y="162" font-size="9" fill="#475569">• A: Ngang mặt nhai R7 | B: Giữa mặt nhai & cổ R7 | C: Dưới đường cổ R7</text>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. Bảng tóm tắt tiên lượng phẫu thuật -->
+                <div>
+                    <h4 class="text-sm font-bold text-slate-900 uppercase tracking-wider mb-2.5">3. Bảng tổng hợp tiên lượng mức độ khó</h4>
+                    <div class="overflow-x-auto border border-slate-200 rounded-xl">
+                        <table class="w-full text-left text-xs sm:text-sm">
+                            <thead class="bg-slate-100 text-slate-700 font-bold">
+                                <tr>
+                                    <th class="px-4 py-2.5">Tiêu chí</th>
+                                    <th class="px-4 py-2.5 text-tealmed-700">Thuận lợi (Dễ)</th>
+                                    <th class="px-4 py-2.5 text-amber-700">Trung bình</th>
+                                    <th class="px-4 py-2.5 text-rose-700">Phức tạp (Khó)</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-200 text-slate-600">
+                                <tr>
+                                    <td class="px-4 py-2.5 font-semibold text-slate-800">Pell & Gregory</td>
+                                    <td class="px-4 py-2.5">Loại I — Vị trí A</td>
+                                    <td class="px-4 py-2.5">Loại II — Vị trí B</td>
+                                    <td class="px-4 py-2.5">Loại III — Vị trí C</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-2.5 font-semibold text-slate-800">Trục răng (Winter)</td>
+                                    <td class="px-4 py-2.5">Thẳng đứng / Lệch gần nhẹ</td>
+                                    <td class="px-4 py-2.5">Nằm ngang (Horizontal)</td>
+                                    <td class="px-4 py-2.5">Lệch xa (Distoangular) / Đảo ngược</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-2.5 font-semibold text-slate-800">Chân răng & Ống thần kinh</td>
+                                    <td class="px-4 py-2.5">Chân chụm, cách xa ống R dưới</td>
+                                    <td class="px-4 py-2.5">2 chân tách rời, cong nhẹ</td>
+                                    <td class="px-4 py-2.5">Chân dùi trống, ôm ống R dưới</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 4. Câu hỏi lượng giá nhanh (Interactive Quiz) -->
+                <div class="p-4 sm:p-5 rounded-2xl bg-slate-900 text-white">
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="px-2 py-0.5 text-[11px] font-bold bg-amber-500 text-slate-900 rounded">LƯỢNG GIÁ NHANH</span>
+                        <span class="text-xs text-slate-400">Kiểm tra ghi nhớ lâm sàng</span>
+                    </div>
+                    <p class="text-sm font-medium mb-3">
+                        Trên phim Panorama, một răng khôn hàm dưới có điểm cao nhất của mặt nhai nằm <strong>thấp hơn đường cổ răng giải phẫu của răng 7</strong>, và toàn bộ thân răng nằm trong cành lên xương hàm dưới. Phân loại đúng là:
+                    </p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs sm:text-sm" id="quizOptions">
+                        <button onclick="checkQuizAnswer(this, false)" class="text-left px-3.5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 transition-colors">
+                            A. Loại II — Vị trí B
+                        </button>
+                        <button onclick="checkQuizAnswer(this, true)" class="text-left px-3.5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 transition-colors">
+                            B. Loại III — Vị trí C
+                        </button>
+                        <button onclick="checkQuizAnswer(this, false)" class="text-left px-3.5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 transition-colors">
+                            C. Loại III — Vị trí B
+                        </button>
+                        <button onclick="checkQuizAnswer(this, false)" class="text-left px-3.5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 transition-colors">
+                            D. Loại I — Vị trí C
+                        </button>
+                    </div>
+                    <p id="quizFeedback" class="hidden mt-3 text-xs font-medium p-2.5 rounded-lg"></p>
+                </div>
+            `;
+        }
+
+        // Template cho các bài giảng khác trong danh mục
+        function getGenericLessonTemplate(lesson) {
+            return `
+                <div class="p-4 rounded-xl bg-medical-50 border border-medical-100">
+                    <h4 class="text-sm font-bold text-medical-900 mb-1">Tóm tắt mục tiêu bài học</h4>
+                    <p class="text-sm text-slate-700 leading-relaxed">${lesson.summary}</p>
+                </div>
+
+                <div class="p-5 rounded-2xl border-2 border-dashed border-slate-200 bg-slate-50 text-center space-y-3">
+                    <div class="w-12 h-12 rounded-xl bg-white border border-slate-200 text-medical-600 flex items-center justify-center mx-auto shadow-xs">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                    </div>
+                    <h4 class="text-base font-bold text-slate-800">Khung bài giảng đã sẵn sàng nhận dữ liệu từ file PDF</h4>
+                    <p class="text-xs sm:text-sm text-slate-600 max-w-md mx-auto">
+                        Bạn có thể tải file PDF quyển <strong>"${lesson.source}"</strong> vào cuộc trò chuyện và yêu cầu xuất nội dung chi tiết cho bài này theo đúng bố cục chuẩn như bài <em>Phân loại Pell & Gregory</em>.
+                    </p>
+                    <div class="pt-2">
+                        <button onclick="openSampleLesson('pell-gregory')" class="px-4 py-2 rounded-xl bg-medical-600 text-white text-xs font-semibold hover:bg-medical-700 transition-colors">
+                            Xem bài mẫu hoàn chỉnh (Pell & Gregory)
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Chấm điểm Quiz trực tiếp trong Modal
+        function checkQuizAnswer(btnElement, isCorrect) {
+            const buttons = document.querySelectorAll('#quizOptions button');
+            const feedback = document.getElementById('quizFeedback');
+
+            buttons.forEach(btn => {
+                btn.disabled = true;
+                btn.classList.remove('hover:bg-slate-700');
+            });
+
+            if (isCorrect) {
+                btnElement.classList.remove('bg-slate-800', 'border-slate-700');
+                btnElement.classList.add('bg-emerald-600', 'border-emerald-400', 'text-white', 'font-bold');
+                feedback.textContent = '✓ Chính xác! Thân răng nằm hoàn toàn trong cành lên là Loại III, và mặt nhai thấp hơn cổ răng 7 là Vị trí C.';
+                feedback.className = 'mt-3 text-xs font-medium p-3 rounded-xl bg-emerald-950/90 text-emerald-200 border border-emerald-700 block';
+            } else {
+                btnElement.classList.remove('bg-slate-800', 'border-slate-700');
+                btnElement.classList.add('bg-rose-600', 'border-rose-400', 'text-white');
+                feedback.textContent = '✕ Chưa chính xác. Đáp án đúng là B (Loại III — Vị trí C): toàn bộ thân răng trong cành lên = Loại III; dưới cổ R7 = Vị trí C.';
+                feedback.className = 'mt-3 text-xs font-medium p-3 rounded-xl bg-rose-950/90 text-rose-200 border border-rose-700 block';
+            }
+        }
+
+        // Điều khiển Modal Quản trị & Toast
+        function openAdminModal() {
+            document.getElementById('adminModal').classList.remove('hidden');
+        }
+        function closeAdminModal() {
+            document.getElementById('adminModal').classList.add('hidden');
+        }
+
+        let toastTimer;
+        function openToast(msg) {
+            const box = document.getElementById('toastBox');
+            document.getElementById('toastMessage').textContent = msg;
+            box.classList.remove('hidden');
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => {
+                box.classList.add('hidden');
+            }, 3500);
+        }
+    </script>
+</body>
+</html>
