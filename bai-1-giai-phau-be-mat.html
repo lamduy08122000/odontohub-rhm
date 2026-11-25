@@ -1,0 +1,1617 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OdontoHub | Bài 1: Giải phẫu bề mặt vùng đầu cổ và khoang miệng</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            medical: {
+              50: '#f0fdfa',
+              100: '#ccfbf1',
+              200: '#99f6e4',
+              500: '#14b8a6',
+              600: '#0d9488',
+              700: '#0f766e',
+              800: '#115e59',
+              900: '#134e4a',
+            },
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    /* Custom scrollbar & SVG interactive states */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f8fafc;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+    .svg-hotspot {
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .svg-hotspot:hover {
+      filter: brightness(0.92);
+      stroke-width: 2.5px;
+    }
+    .svg-hotspot.active {
+      stroke: #0f766e;
+      stroke-width: 3px;
+      filter: drop-shadow(0 2px 6px rgba(13, 148, 136, 0.35));
+    }
+    mark.search-hl {
+      background-color: #fef08a;
+      color: #0f172a;
+      padding: 0 2px;
+      border-radius: 3px;
+    }
+    .dropzone-active {
+      border-color: #0d9488 !important;
+      background-color: #f0fdfa !important;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-teal-100 selection:text-teal-900">
+
+  <!-- Mobile Top Navbar -->
+  <header class="lg:hidden sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-slate-200 px-4 py-3 flex items-center justify-between">
+    <div class="flex items-center gap-2.5">
+      <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-teal-600 to-indigo-600 flex items-center justify-center text-white font-bold shadow-sm">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+        </svg>
+      </div>
+      <div>
+        <span class="font-bold text-slate-900 tracking-tight text-sm block leading-none">OdontoHub</span>
+        <span class="text-[11px] text-teal-700 font-medium">Răng Hàm Mặt • UMP</span>
+      </div>
+    </div>
+    <button id="mobileMenuBtn" class="p-2 rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-100 transition" aria-label="Mở danh mục">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </button>
+  </header>
+
+  <!-- Mobile Drawer Overlay -->
+  <div id="drawerOverlay" class="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-40 hidden lg:hidden"></div>
+
+  <div class="min-h-screen flex">
+    <!-- Left Sidebar Navigation -->
+    <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-72 bg-white border-r border-slate-200 transform -translate-x-full lg:translate-x-0 transition-transform duration-200 ease-in-out flex flex-col">
+      <!-- Brand Header -->
+      <div class="p-5 border-b border-slate-100 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-teal-600 to-indigo-600 flex items-center justify-center text-white shadow-md shadow-teal-600/20">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+          </div>
+          <div>
+            <div class="flex items-center gap-1.5">
+              <span class="font-extrabold text-slate-900 text-base tracking-tight">OdontoHub</span>
+              <span class="text-[10px] font-semibold uppercase px-1.5 py-0.5 rounded bg-teal-50 text-teal-700 border border-teal-200">UMP</span>
+            </div>
+            <p class="text-xs text-slate-500 mt-0.5">Khám & Chẩn đoán Miệng – HM</p>
+          </div>
+        </div>
+        <button id="closeSidebarBtn" class="lg:hidden p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Real-time Search Box in Sidebar -->
+      <div class="p-4 border-b border-slate-100 bg-slate-50/60">
+        <label for="globalSearch" class="block text-[11px] font-semibold uppercase tracking-wider text-slate-400 mb-1.5">Tra cứu nhanh thuật ngữ</label>
+        <div class="relative">
+          <input
+            type="text"
+            id="globalSearch"
+            placeholder="VD: Stensen, glabella, gai đài..."
+            class="w-full pl-9 pr-8 py-2 text-sm bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition placeholder:text-slate-400"
+          />
+          <svg class="w-4 h-4 text-slate-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 103.5 10.5a7.5 7.5 0 0013.15 6.15z" />
+          </svg>
+          <button id="clearSearchBtn" class="hidden absolute right-2.5 top-2 text-slate-400 hover:text-slate-600 text-xs font-bold px-1 rounded">✕</button>
+        </div>
+        <p id="searchStatus" class="text-[11px] text-teal-700 font-medium mt-1.5 hidden"></p>
+      </div>
+
+      <!-- Navigation Links -->
+      <nav class="flex-1 overflow-y-auto p-3 space-y-1" id="navLinks">
+        <a href="#sec-overview" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-700 hover:bg-teal-50 hover:text-teal-800 transition">
+          <span class="w-6 h-6 rounded-lg bg-slate-100 text-slate-600 flex items-center justify-center text-xs font-bold">1</span>
+          <span>Mục tiêu & Ý nghĩa lâm sàng</span>
+        </a>
+        <a href="#sec-head-face" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-700 hover:bg-teal-50 hover:text-teal-800 transition">
+          <span class="w-6 h-6 rounded-lg bg-slate-100 text-slate-600 flex items-center justify-center text-xs font-bold">2.1</span>
+          <span>Vùng Đầu Mặt (11 vùng)</span>
+        </a>
+        <a href="#sec-neck-triangles" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-700 hover:bg-teal-50 hover:text-teal-800 transition">
+          <span class="w-6 h-6 rounded-lg bg-slate-100 text-slate-600 flex items-center justify-center text-xs font-bold">2.2a</span>
+          <span>Đường giữa & Tam giác cổ</span>
+        </a>
+        <a href="#sec-lymph-nodes" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-700 hover:bg-teal-50 hover:text-teal-800 transition">
+          <span class="w-6 h-6 rounded-lg bg-slate-100 text-slate-600 flex items-center justify-center text-xs font-bold">2.2b</span>
+          <span>Hệ thống Hạch bạch huyết</span>
+        </a>
+        <a href="#sec-oral-cavity" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-700 hover:bg-teal-50 hover:text-teal-800 transition">
+          <span class="w-6 h-6 rounded-lg bg-slate-100 text-slate-600 flex items-center justify-center text-xs font-bold">3</span>
+          <span>Khoang Miệng & Khẩu Hầu</span>
+        </a>
+      </nav>
+
+      <!-- Export & GitHub Backup Actions -->
+      <div class="p-4 border-t border-slate-100 bg-slate-50/90 space-y-2.5">
+        <button id="exportHtmlBtn" class="w-full flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-xl bg-teal-600 hover:bg-teal-700 text-white text-xs font-semibold shadow-sm transition">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+          </svg>
+          <span>Lưu bản sao HTML kèm ảnh</span>
+        </button>
+        <div class="flex items-center justify-between text-[11px] text-slate-500 pt-0.5">
+          <span>Giáo trình RHM • UMP</span>
+          <button id="clearAllMediaBtn" class="text-rose-600 hover:underline font-medium">Xóa ảnh tạm</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 lg:pl-72 min-w-0">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-10 py-6 lg:py-10 space-y-12">
+
+        <!-- Hero Banner -->
+        <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900 via-teal-900 to-indigo-950 text-white p-6 sm:p-8 lg:p-10 shadow-xl">
+          <div class="relative z-10 max-w-3xl">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur border border-white/15 text-teal-200 text-xs font-semibold mb-4">
+              <span class="w-2 h-2 rounded-full bg-teal-400 animate-pulse"></span>
+              Giáo trình Khám và Chẩn đoán Bệnh vùng Miệng – Hàm Mặt • UMP
+            </div>
+            <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight leading-tight">
+              Bài 1: Giải phẫu bề mặt vùng đầu cổ và khoang miệng
+            </h1>
+            <p class="mt-3 text-slate-300 text-sm sm:text-base leading-relaxed">
+              Hệ thống hóa toàn diện các điểm mốc giải phẫu bề mặt từ ngoài mặt vào trong miệng, mối liên quan cấu trúc lớp sâu, bản đồ hạch bạch huyết cổ và hỗ trợ đính kèm hình ảnh lâm sàng trực tiếp trong từng phân mục.
+            </p>
+            <div class="mt-6 flex flex-wrap items-center gap-3">
+              <a href="#sec-head-face" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-teal-500 hover:bg-teal-400 text-slate-950 font-semibold text-sm transition shadow-lg shadow-teal-500/25">
+                Bắt đầu nội dung bài học
+              </a>
+              <span class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white/10 text-teal-100 border border-white/15 text-xs font-medium">
+                <svg class="w-4 h-4 text-teal-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                Hỗ trợ 6 khung chèn ảnh minh họa & xuất HTML lưu trữ
+              </span>
+            </div>
+          </div>
+          <div class="hidden md:block absolute -right-10 -bottom-12 w-72 h-72 rounded-full bg-teal-500/15 blur-2xl"></div>
+          <div class="hidden md:block absolute right-12 -top-10 w-52 h-52 rounded-full bg-indigo-500/20 blur-2xl"></div>
+        </div>
+
+        <!-- SECTION 1: MỤC TIÊU & Ý NGHĨA LÂM SÀNG -->
+        <section id="sec-overview" class="scroll-mt-20 space-y-5 searchable-section">
+          <div class="flex items-center gap-3">
+            <span class="w-9 h-9 rounded-xl bg-teal-600 text-white font-bold flex items-center justify-center shadow-sm">01</span>
+            <div>
+              <h2 class="text-xl sm:text-2xl font-bold text-slate-900">Mục tiêu & Ý nghĩa lâm sàng</h2>
+              <p class="text-xs sm:text-sm text-slate-500">Nền tảng định hướng thăm khám và can thiệp phẫu thuật vùng đầu cổ</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs">
+              <div class="w-10 h-10 rounded-xl bg-teal-50 text-teal-700 flex items-center justify-center mb-4">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                </svg>
+              </div>
+              <h3 class="text-base font-bold text-slate-900 mb-2">Định nghĩa Giải phẫu bề mặt</h3>
+              <p class="text-sm text-slate-600 leading-relaxed">
+                <strong>Giải phẫu bề mặt (Surface Anatomy)</strong> mô tả hình dáng, đặc điểm các cấu trúc hiện diện ở bề mặt cơ thể và <strong>mối liên quan của chúng với các cấu trúc ở lớp sâu bên dưới</strong> (xương, cơ, mạch máu, thần kinh, tuyến nước bọt và các khoang mạc).
+              </p>
+            </div>
+
+            <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs">
+              <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-700 flex items-center justify-center mb-4">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+              </div>
+              <h3 class="text-base font-bold text-slate-900 mb-2">Ứng dụng thực hành lâm sàng</h3>
+              <ul class="text-sm text-slate-600 space-y-2 leading-relaxed">
+                <li class="flex items-start gap-2">
+                  <span class="text-teal-600 font-bold mt-0.5">•</span>
+                  <span>Giúp bác sĩ thực hiện quy trình khám toàn diện vùng đầu cổ – trong miệng theo trình tự chuẩn xác.</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-teal-600 font-bold mt-0.5">•</span>
+                  <span>Nhận diện biến thể sinh lý bình thường để phân biệt sớm với biến đổi bệnh lý.</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-teal-600 font-bold mt-0.5">•</span>
+                  <span>Định vị chính xác ranh giới tổn thương và đường lan nhiễm trùng phục vụ chẩn đoán và phẫu thuật an toàn.</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- SECTION 2.1: VÙNG ĐẦU MẶT (11 VÙNG) -->
+        <section id="sec-head-face" class="scroll-mt-20 space-y-5 searchable-section">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div class="flex items-center gap-3">
+              <span class="w-9 h-9 rounded-xl bg-teal-600 text-white font-bold flex items-center justify-center shadow-sm">2.1</span>
+              <div>
+                <h2 class="text-xl sm:text-2xl font-bold text-slate-900">Giải phẫu bề mặt vùng Đầu Mặt (11 vùng)</h2>
+                <p class="text-xs sm:text-sm text-slate-500">Khuôn mặt được chia thành <strong>3 tầng theo chiều dọc</strong> có kích thước tương đương nhau</p>
+              </div>
+            </div>
+            <!-- Filter Pills -->
+            <div class="flex flex-wrap gap-1.5" id="faceFilterGroup">
+              <button data-filter="all" class="face-filter-btn active px-3 py-1.5 rounded-xl text-xs font-semibold bg-teal-600 text-white transition">Tất cả (11)</button>
+              <button data-filter="upper" class="face-filter-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-white text-slate-600 border border-slate-200 hover:bg-slate-100 transition">Sọ & Tầng trên</button>
+              <button data-filter="middle" class="face-filter-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-white text-slate-600 border border-slate-200 hover:bg-slate-100 transition">Tầng giữa mặt</button>
+              <button data-filter="lower" class="face-filter-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-white text-slate-600 border border-slate-200 hover:bg-slate-100 transition">Tầng dưới mặt</button>
+            </div>
+          </div>
+
+          <!-- 3 Facial Thirds Summary Strip -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 bg-white p-4 rounded-2xl border border-slate-200">
+            <div class="p-3 rounded-xl bg-slate-50 border border-slate-100">
+              <span class="text-[11px] font-bold uppercase tracking-wider text-teal-700">1/3 Trên khuôn mặt</span>
+              <p class="text-xs text-slate-600 mt-1">Vùng trán: từ chân tóc đến gờ trên ổ mắt / điểm Glabella.</p>
+            </div>
+            <div class="p-3 rounded-xl bg-slate-50 border border-slate-100">
+              <span class="text-[11px] font-bold uppercase tracking-wider text-indigo-700">1/3 Giữa khuôn mặt</span>
+              <p class="text-xs text-slate-600 mt-1">Từ Glabella đến điểm dưới mũi (tương ứng chiều cao vành tai).</p>
+            </div>
+            <div class="p-3 rounded-xl bg-slate-50 border border-slate-100">
+              <span class="text-[11px] font-bold uppercase tracking-wider text-amber-700">1/3 Dưới khuôn mặt</span>
+              <p class="text-xs text-slate-600 mt-1">Từ điểm dưới mũi đến bờ dưới cằm (rãnh môi–cằm ở gần trung điểm đỉnh mũi–cằm).</p>
+            </div>
+          </div>
+
+          <!-- 11 Regions Cards Grid -->
+          <div id="faceRegionsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+
+          <!-- MEDIA SLOT 1: HEAD & FACE -->
+          <div class="media-slot-wrapper" data-slot-id="slot-head-face" data-slot-title="Hình minh họa 1: Phân chia 3 tầng mặt & 11 vùng giải phẫu ngoài mặt" data-slot-hint="Gợi ý: Sơ đồ phân chia 3 tầng mặt, các vùng giải phẫu ngoài mặt, lỗ/khoang dưới ổ mắt, cung gò má và khớp thái dương hàm."></div>
+        </section>
+
+        <!-- SECTION 2.2A: ĐƯỜNG GIỮA CỔ & TAM GIÁC CỔ -->
+        <section id="sec-neck-triangles" class="scroll-mt-20 space-y-6 searchable-section">
+          <div class="flex items-center gap-3">
+            <span class="w-9 h-9 rounded-xl bg-teal-600 text-white font-bold flex items-center justify-center shadow-sm">2.2a</span>
+            <div>
+              <h2 class="text-xl sm:text-2xl font-bold text-slate-900">Vùng Cổ: Mốc đường giữa & Các tam giác cổ</h2>
+              <p class="text-xs sm:text-sm text-slate-500">Định vị các cấu trúc giải phẫu từ xương móng (C3) đến khuyết trên ức</p>
+            </div>
+          </div>
+
+          <!-- 7 Midline Landmarks -->
+          <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs">
+            <h3 class="text-base font-bold text-slate-900 mb-1 flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-teal-600"></span>
+              7 Mốc giải phẫu đường giữa cổ (từ trên xuống dưới)
+            </h3>
+            <p class="text-xs text-slate-500 mb-5">Cho bệnh nhân ngửa nhẹ đầu để quan sát và sờ nắn tuần tự theo trục dọc đường giữa:</p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-7 gap-3">
+              <div class="p-3.5 rounded-xl bg-teal-50/70 border border-teal-200/80 flex flex-col justify-between">
+                <div>
+                  <span class="inline-block px-2 py-0.5 rounded text-[10px] font-bold bg-teal-600 text-white mb-2">1 • C3</span>
+                  <h4 class="font-bold text-sm text-slate-900">Xương móng</h4>
+                </div>
+                <p class="text-xs text-slate-600 mt-2">Thân xương nằm trên khuyết sụn giáp khoảng <strong>2 cm</strong>, ngang đốt sống cổ C3.</p>
+              </div>
+
+              <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 flex flex-col justify-between">
+                <div>
+                  <span class="inline-block px-2 py-0.5 rounded text-[10px] font-bold bg-slate-700 text-white mb-2">2 • C4</span>
+                  <h4 class="font-bold text-sm text-slate-900">Khuyết sụn giáp</h4>
+                </div>
+                <p class="text-xs text-slate-600 mt-2">Dễ nhìn và sờ thấy trên đường giữa, ngang bờ trên <strong>C4</strong> (hoặc đĩa đệm C3–C4).</p>
+              </div>
+
+              <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 flex flex-col justify-between">
+                <div>
+                  <span class="inline-block px-2 py-0.5 rounded text-[10px] font-bold bg-slate-700 text-white mb-2">3 • Thanh quản</span>
+                  <h4 class="font-bold text-sm text-slate-900">Sụn giáp</h4>
+                </div>
+                <p class="text-xs text-slate-600 mt-2">Sụn thanh quản lớn nhất; phần nhô ra trước gọi là <strong>"táo Adam"</strong> (trái cổ).</p>
+              </div>
+
+              <div class="p-3.5 rounded-xl bg-amber-50/70 border border-amber-200 flex flex-col justify-between">
+                <div>
+                  <span class="inline-block px-2 py-0.5 rounded text-[10px] font-bold bg-amber-600 text-white mb-2">4 • Mốc cấp cứu</span>
+                  <h4 class="font-bold text-sm text-slate-900">Dây chằng nhẫn – giáp</h4>
+                </div>
+                <p class="text-xs text-slate-600 mt-2">Khoảng lõm mềm nằm ngay giữa bờ dưới sụn giáp và sụn nhẫn.</p>
+              </div>
+
+              <div class="p-3.5 rounded-xl bg-teal-50/70 border border-teal-200/80 flex flex-col justify-between">
+                <div>
+                  <span class="inline-block px-2 py-0.5 rounded text-[10px] font-bold bg-teal-600 text-white mb-2">5 • C6</span>
+                  <h4 class="font-bold text-sm text-slate-900">Sụn nhẫn</h4>
+                </div>
+                <p class="text-xs text-slate-600 mt-2">Ngang đốt sống cổ <strong>C6</strong>; cung trước nằm dưới bờ dưới sụn giáp khoảng <strong>1 cm</strong>.</p>
+              </div>
+
+              <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 flex flex-col justify-between">
+                <div>
+                  <span class="inline-block px-2 py-0.5 rounded text-[10px] font-bold bg-slate-700 text-white mb-2">6 • Sụn 2–3</span>
+                  <h4 class="font-bold text-sm text-slate-900">Khí quản & Eo tuyến giáp</h4>
+                </div>
+                <p class="text-xs text-slate-600 mt-2">Eo tuyến giáp nằm ngang vòng sụn khí quản <strong>thứ 2 và thứ 3</strong> (bình thường sờ không chạm).</p>
+              </div>
+
+              <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 flex flex-col justify-between">
+                <div>
+                  <span class="inline-block px-2 py-0.5 rounded text-[10px] font-bold bg-slate-700 text-white mb-2">7 • Giới hạn dưới</span>
+                  <h4 class="font-bold text-sm text-slate-900">Khuyết trên ức</h4>
+                </div>
+                <p class="text-xs text-slate-600 mt-2">Hõm trên cán xương ức, đánh dấu giới hạn dưới của đường giữa cổ.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Neck Triangles -->
+          <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs space-y-4">
+            <div>
+              <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-indigo-600"></span>
+                Các Tam giác vùng cổ (Mốc phân chia: Cơ ức đòn chũm – CƯĐC)
+              </h3>
+              <p class="text-xs text-slate-500 mt-1">
+                Cho bệnh nhân xoay/nghiêng đầu sang một bên để làm nổi rõ <strong>cơ ức đòn chũm (CƯĐC)</strong> bên đối diện làm mốc phân chia:
+              </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+              <div class="rounded-2xl border border-teal-200 bg-teal-50/30 p-5 space-y-3">
+                <div class="flex items-center justify-between">
+                  <h4 class="font-bold text-teal-900 text-sm">A. Tam giác cổ trước (4 tam giác nhỏ)</h4>
+                  <span class="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-teal-100 text-teal-800">Trước CƯĐC</span>
+                </div>
+                <p class="text-xs text-slate-600">
+                  <strong>Giới hạn chung:</strong> Đường giữa cổ, bờ trước CƯĐC, bờ dưới XHD và đường nối góc hàm – mỏm chũm.
+                </p>
+                <div class="space-y-2.5 pt-1">
+                  <div class="bg-white p-3 rounded-xl border border-slate-200/80">
+                    <span class="font-bold text-xs text-slate-900">1. Tam giác dưới cằm:</span>
+                    <span class="text-xs text-slate-600"> Giới hạn bởi xương móng, bụng trước cơ nhị thân và đường giữa.</span>
+                  </div>
+                  <div class="bg-white p-3 rounded-xl border border-slate-200/80">
+                    <span class="font-bold text-xs text-slate-900">2. Tam giác dưới hàm:</span>
+                    <span class="text-xs text-slate-600"> Giới hạn bởi bụng trước, bụng sau cơ nhị thân và bờ dưới XHD. <strong>Chứa: Tuyến dưới hàm, động mạch và tĩnh mạch mặt.</strong></span>
+                  </div>
+                  <div class="bg-white p-3 rounded-xl border border-slate-200/80">
+                    <span class="font-bold text-xs text-slate-900">3. Tam giác cảnh:</span>
+                    <span class="text-xs text-slate-600"> Giới hạn bởi bờ trước CƯĐC, bụng sau cơ nhị thân và bụng trên cơ vai móng. <strong>Chứa: Động mạch cảnh, tĩnh mạch cảnh trong, thần kinh lang thang (X) và thân giao cảm cổ.</strong></span>
+                  </div>
+                  <div class="bg-white p-3 rounded-xl border border-slate-200/80">
+                    <span class="font-bold text-xs text-slate-900">4. Tam giác cơ:</span>
+                    <span class="text-xs text-slate-600"> Giới hạn bởi bờ trước CƯĐC, bụng trên cơ vai móng và đường giữa cổ. <strong>Chứa: Khí quản, tuyến giáp, thực quản.</strong></span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="rounded-2xl border border-indigo-200 bg-indigo-50/30 p-5 flex flex-col justify-between space-y-4">
+                <div class="space-y-3">
+                  <div class="flex items-center justify-between">
+                    <h4 class="font-bold text-indigo-950 text-sm">B. Tam giác cổ sau (2 tam giác nhỏ)</h4>
+                    <span class="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-indigo-100 text-indigo-800">Sau CƯĐC</span>
+                  </div>
+                  <p class="text-xs text-slate-600">
+                    <strong>Giới hạn chung:</strong> Bờ sau CƯĐC, bờ trước cơ thang và xương đòn. Bụng dưới cơ vai móng chia thành 2 tam giác nhỏ:
+                  </p>
+                  <div class="space-y-2.5 pt-1">
+                    <div class="bg-white p-3.5 rounded-xl border border-slate-200/80">
+                      <span class="font-bold text-xs text-slate-900">1. Tam giác chẩm (phần trên):</span>
+                      <span class="text-xs text-slate-600"> Nằm phía trên bụng dưới cơ vai móng; có dây thần kinh phụ (XI) đi qua.</span>
+                    </div>
+                    <div class="bg-white p-3.5 rounded-xl border border-slate-200/80">
+                      <span class="font-bold text-xs text-slate-900">2. Tam giác trên đòn (phần dưới):</span>
+                      <span class="text-xs text-slate-600"> Nằm dưới bụng dưới cơ vai móng, ngay trên xương đòn; chứa hạch trên đòn (nhóm VB), động mạch dưới đòn và đám rối cánh tay.</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="p-3.5 rounded-xl bg-amber-50 border border-amber-200 text-xs text-amber-900">
+                  <strong>Mẹo ghi nhớ lâm sàng:</strong> Bụng sau cơ nhị thân ngăn cách tam giác dưới hàm với tam giác cảnh; cơ vai móng chia đôi cả tam giác cổ trước (bụng trên) và tam giác cổ sau (bụng dưới).
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- MEDIA SLOT 2: NECK TRIANGLES -->
+          <div class="media-slot-wrapper" data-slot-id="slot-neck-triangles" data-slot-title="Hình minh họa 2: Mốc đường giữa cổ & Phân chia các tam giác vùng cổ" data-slot-hint="Gợi ý: Ảnh giải phẫu cơ ức đòn chũm, cơ nhị thân, cơ vai móng và các tam giác cổ trước / cổ sau."></div>
+        </section>
+
+        <!-- SECTION 2.2B: HỆ THỐNG HẠCH BẠCH HUYẾT -->
+        <section id="sec-lymph-nodes" class="scroll-mt-20 space-y-6 searchable-section">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div class="flex items-center gap-3">
+              <span class="w-9 h-9 rounded-xl bg-rose-600 text-white font-bold flex items-center justify-center shadow-sm">2.2b</span>
+              <div>
+                <h2 class="text-xl sm:text-2xl font-bold text-slate-900">Hệ thống Hạch Bạch Huyết vùng Đầu Cổ (~300 / 800 hạch)</h2>
+                <p class="text-xs sm:text-sm text-slate-500">Hạch vùng đầu mặt và bản đồ phân vùng 6 nhóm hạch cổ (Levels I–VI)</p>
+              </div>
+            </div>
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-50 text-rose-700 border border-rose-200 text-xs font-semibold">
+              Ung thư miệng → di căn Nhóm I–III
+            </span>
+          </div>
+
+          <!-- Head & Face Lymph Nodes -->
+          <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs space-y-5">
+            <div>
+              <h3 class="text-sm font-bold uppercase tracking-wider text-slate-500 mb-3">1. Các nhóm hạch vùng đầu mặt</h3>
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+                <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200">
+                  <h4 class="font-bold text-xs text-slate-900">Hạch chẩm (1–3 hạch)</h4>
+                  <p class="text-xs text-slate-600 mt-1">Dẫn lưu vùng chẩm, da đầu → chuỗi hạch cổ nông.</p>
+                </div>
+                <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200">
+                  <h4 class="font-bold text-xs text-slate-900">Hạch sau tai / chũm (~2 hạch)</h4>
+                  <p class="text-xs text-slate-600 mt-1">Trên chỗ bám mỏm chũm CƯĐC; dẫn lưu sau thái dương đỉnh, trên vành tai, sau ống tai ngoài → cổ nông.</p>
+                </div>
+                <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200">
+                  <h4 class="font-bold text-xs text-slate-900">Nhóm hạch mang tai</h4>
+                  <p class="text-xs text-slate-600 mt-1">Hạch trước tai (1–3 hạch trước gờ bình tai) & nông/sâu trong tuyến; dẫn lưu trán–thái dương, mi mắt, loa tai, ống tai ngoài, gốc mũi, mũi hầu → cổ sâu trên.</p>
+                </div>
+                <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200">
+                  <h4 class="font-bold text-xs text-slate-900">Hạch sau hầu (1–3 hạch)</h4>
+                  <p class="text-xs text-slate-600 mt-1">Nằm trong mạc má hầu; dẫn lưu hốc mũi, mũi hầu, vòi tai → hạch cổ sâu trên.</p>
+                </div>
+                <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200">
+                  <h4 class="font-bold text-xs text-slate-900">Hạch má – mặt</h4>
+                  <p class="text-xs text-slate-600 mt-1">Nằm nông mặt ngoài cơ mút; dẫn lưu mi mắt, kết mạc, da–niêm mạc mũi, má → hạch dưới hàm.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- 6 Cervical Levels Table -->
+            <div>
+              <h3 class="text-sm font-bold uppercase tracking-wider text-slate-500 mb-3">2. Phân vùng 6 nhóm hạch vùng cổ (theo bản đồ lâm sàng / phẫu thuật)</h3>
+              <div class="overflow-x-auto rounded-xl border border-slate-200">
+                <table class="w-full text-left border-collapse text-xs sm:text-sm">
+                  <thead>
+                    <tr class="bg-slate-100 text-slate-700 border-b border-slate-200">
+                      <th class="py-3 px-4 font-bold whitespace-nowrap">Nhóm</th>
+                      <th class="py-3 px-4 font-bold">Tên gọi & Phân nhóm</th>
+                      <th class="py-3 px-4 font-bold">Ranh giới giải phẫu</th>
+                      <th class="py-3 px-4 font-bold">Vùng dẫn lưu & Lưu ý di căn</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-slate-200 bg-white">
+                    <tr class="hover:bg-slate-50/80">
+                      <td class="py-3 px-4 font-extrabold text-teal-700 whitespace-nowrap">Nhóm I</td>
+                      <td class="py-3 px-4 font-semibold text-slate-900">• IA: Dưới cằm<br>• IB: Dưới hàm</td>
+                      <td class="py-3 px-4 text-slate-600">Trên: XHD; Dưới: Xương móng.<br><strong>IA:</strong> Trong tam giác dưới cằm.<br><strong>IB:</strong> Trong tam giác dưới hàm.</td>
+                      <td class="py-3 px-4 text-slate-600"><strong>IA:</strong> Cằm, môi dưới, phần trước lưỡi và sàn miệng.<br><strong>IB:</strong> Da–niêm mạc má, phần thấp khoang mũi, môi trên/dưới, sàn miệng, phần trước lưỡi, khẩu cái cứng/mềm, sống hàm và nhận mạch đi từ IA.</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/80">
+                      <td class="py-3 px-4 font-extrabold text-teal-700 whitespace-nowrap">Nhóm II</td>
+                      <td class="py-3 px-4 font-semibold text-slate-900">Cảnh trên<br>• IIA (trước TK phụ)<br>• IIB (sau TK phụ)</td>
+                      <td class="py-3 px-4 text-slate-600">1/3 trên TM cảnh trong (từ nền sọ đến xương móng / ngã ba cảnh). Chia bởi thần kinh phụ (XI) / bờ sau TM cảnh trong.</td>
+                      <td class="py-3 px-4 text-slate-600">Khoang miệng, mũi hầu, khẩu hầu, tuyến mang tai. <span class="text-rose-700 font-medium">U nguyên phát mũi hầu, khẩu hầu thường di căn nhóm IIB nhiều hơn.</span></td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/80">
+                      <td class="py-3 px-4 font-extrabold text-teal-700 whitespace-nowrap">Nhóm III</td>
+                      <td class="py-3 px-4 font-semibold text-slate-900">Cảnh giữa</td>
+                      <td class="py-3 px-4 text-slate-600">1/3 giữa TM cảnh trong (từ ngã ba cảnh đến khuyết nhẫn giáp / bờ dưới sụn nhẫn / cơ vai móng).</td>
+                      <td class="py-3 px-4 text-slate-600">Dẫn lưu đáy lưỡi, thanh quản, hạ hầu, tuyến giáp và nhận mạch đi từ nhóm II, V.</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/80">
+                      <td class="py-3 px-4 font-extrabold text-indigo-700 whitespace-nowrap">Nhóm IV</td>
+                      <td class="py-3 px-4 font-semibold text-slate-900">Cảnh dưới</td>
+                      <td class="py-3 px-4 text-slate-600">1/3 dưới TM cảnh trong (từ bờ trên cơ vai móng đến xương đòn).</td>
+                      <td class="py-3 px-4 text-slate-600">Hạ hầu, thanh quản, thực quản cổ, tuyến giáp.</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/80">
+                      <td class="py-3 px-4 font-extrabold text-indigo-700 whitespace-nowrap">Nhóm V</td>
+                      <td class="py-3 px-4 font-semibold text-slate-900">Tam giác cổ sau<br>• VA (trên)<br>• VB (dưới)</td>
+                      <td class="py-3 px-4 text-slate-600">Chia bởi mặt phẳng bờ dưới sụn nhẫn thành <strong>VA</strong> (trên – hạch dây thần kinh phụ) và <strong>VB</strong> (dưới – hạch trên đòn).</td>
+                      <td class="py-3 px-4 text-slate-600">Mũi hầu, khẩu hầu, da đầu sau và vùng trên đòn.</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/80">
+                      <td class="py-3 px-4 font-extrabold text-indigo-700 whitespace-nowrap">Nhóm VI</td>
+                      <td class="py-3 px-4 font-semibold text-slate-900">Khoang cổ trước</td>
+                      <td class="py-3 px-4 text-slate-600">Từ xương móng đến khuyết trên ức, giới hạn hai bên là bờ trong bao cảnh.</td>
+                      <td class="py-3 px-4 text-slate-600">Gồm hạch quanh tuyến giáp, cận khí quản, dọc thần kinh thanh quản quặt ngược và trước nhẫn.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="p-4 rounded-xl bg-rose-50/80 border border-rose-200 flex items-start gap-3">
+              <div class="w-8 h-8 rounded-lg bg-rose-100 text-rose-700 flex items-center justify-center shrink-0 font-bold text-sm">!</div>
+              <div class="text-xs sm:text-sm text-rose-950 leading-relaxed">
+                <strong>Lưu ý lâm sàng:</strong> Ung thư khoang miệng thường di căn đến các <strong>nhóm I – III</strong>, trong khi ung thư vùng cổ dưới (như thanh quản) có xu hướng di căn các nhóm thấp hơn (<strong>nhóm III, IV</strong>).
+              </div>
+            </div>
+          </div>
+
+          <!-- INTERACTIVE SVG DIAGRAM 1: LYMPH NODES & NECK -->
+          <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs font-bold uppercase tracking-wider text-indigo-700">Sơ đồ Vector Tương tác: Bản đồ hạch cổ I – VI</span>
+              <span class="text-[11px] text-slate-500">Chạm vào từng phân vùng màu để xem chi tiết</span>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-center">
+              <div class="lg:col-span-7 bg-slate-50 rounded-2xl border border-slate-200/80 p-3 flex items-center justify-center">
+                <svg class="w-full max-w-md h-auto" viewBox="0 0 520 420" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M 95 65 L 95 115 Q 95 135 115 140 L 175 142 Q 190 142 195 125 L 205 70" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2" />
+                  <path d="M 275 82 Q 292 85 290 105 Q 286 115 274 112 Z" fill="#cbd5e1" stroke="#64748b" stroke-width="1.5" />
+                  <text x="296" y="98" font-size="10" font-weight="600" fill="#475569">Mỏm chũm</text>
+                  <line x1="125" y1="142" x2="125" y2="375" stroke="#94a3b8" stroke-width="2" stroke-dasharray="4 3" />
+                  <rect x="115" y="166" width="38" height="8" rx="4" fill="#0d9488" />
+                  <text x="42" y="174" font-size="10" font-weight="600" fill="#0f766e">Xương móng (C3)</text>
+                  <path d="M 118 195 L 146 202 L 142 230 L 118 228 Z" fill="#99f6e4" stroke="#0d9488" stroke-width="1.5" />
+                  <text x="42" y="215" font-size="10" font-weight="600" fill="#0f766e">Sụn giáp (C4)</text>
+                  <rect x="118" y="242" width="26" height="12" rx="3" fill="#5eead4" stroke="#0d9488" stroke-width="1.5" />
+                  <text x="42" y="252" font-size="10" font-weight="600" fill="#0f766e">Sụn nhẫn (C6)</text>
+                  <path d="M 125 375 Q 245 360 390 385 L 385 398 Q 245 375 125 388 Z" fill="#cbd5e1" stroke="#64748b" stroke-width="1.5" />
+                  <text x="330" y="405" font-size="10.5" font-weight="700" fill="#334155">Xương đòn</text>
+                  <path d="M 320 95 Q 355 235 415 382 L 432 380 Q 370 230 335 95 Z" fill="#fda4af" opacity="0.65" stroke="#e11d48" stroke-width="1.5" />
+                  <text x="372" y="210" font-size="10.5" font-weight="700" fill="#9f1239">Cơ thang</text>
+
+                  <polygon points="118,142 155,142 142,166 125,166" fill="#fde68a" stroke="#d97706" stroke-width="1.5" class="svg-hotspot" data-group="neck" data-region="neck-ia" />
+                  <text x="128" y="157" font-size="10" font-weight="800" fill="#92400e" pointer-events="none">IA</text>
+                  <polygon points="155,142 215,135 202,168 142,166" fill="#fcd34d" stroke="#d97706" stroke-width="1.5" class="svg-hotspot active" data-group="neck" data-region="neck-ib" />
+                  <text x="172" y="156" font-size="11" font-weight="800" fill="#78350f" pointer-events="none">IB</text>
+                  <polygon points="215,120 252,115 246,172 202,168" fill="#99f6e4" stroke="#0d9488" stroke-width="1.5" class="svg-hotspot" data-group="neck" data-region="neck-iia" />
+                  <text x="216" y="148" font-size="10.5" font-weight="800" fill="#115e59" pointer-events="none">IIA</text>
+                  <polygon points="252,115 282,112 276,174 246,172" fill="#5eead4" stroke="#0d9488" stroke-width="1.5" class="svg-hotspot" data-group="neck" data-region="neck-iib" />
+                  <text x="252" y="148" font-size="10.5" font-weight="800" fill="#115e59" pointer-events="none">IIB</text>
+                  <polygon points="198,168 268,174 252,250 185,248" fill="#bae6fd" stroke="#0284c7" stroke-width="1.5" class="svg-hotspot" data-group="neck" data-region="neck-iii" />
+                  <text x="218" y="214" font-size="12" font-weight="800" fill="#0369a1" pointer-events="none">III</text>
+                  <polygon points="185,248 252,250 232,366 172,370" fill="#c7d2fe" stroke="#4f46e5" stroke-width="1.5" class="svg-hotspot" data-group="neck" data-region="neck-iv" />
+                  <text x="204" y="312" font-size="12" font-weight="800" fill="#3730a3" pointer-events="none">IV</text>
+                  <polygon points="282,115 322,115 352,250 264,250" fill="#fbcfe8" stroke="#db2777" stroke-width="1.5" class="svg-hotspot" data-group="neck" data-region="neck-va" />
+                  <text x="298" y="195" font-size="11.5" font-weight="800" fill="#9d174d" pointer-events="none">VA</text>
+                  <polygon points="264,250 352,250 385,378 242,366" fill="#f5d0fe" stroke="#c026d3" stroke-width="1.5" class="svg-hotspot" data-group="neck" data-region="neck-vb" />
+                  <text x="304" y="318" font-size="11.5" font-weight="800" fill="#86198f" pointer-events="none">VB</text>
+                  <polygon points="125,174 185,174 172,370 125,375" fill="#fed7aa" stroke="#ea580c" stroke-width="1.5" class="svg-hotspot" data-group="neck" data-region="neck-vi" />
+                  <text x="148" y="295" font-size="12" font-weight="800" fill="#9a3412" pointer-events="none">VI</text>
+                  <path d="M 272 104 L 292 112 L 222 372 L 185 372 Z" fill="#be123c" fill-opacity="0.2" stroke="#be123c" stroke-width="2" stroke-dasharray="5 3" pointer-events="none" />
+                  <text x="234" y="275" font-size="10" font-weight="700" fill="#881337" transform="rotate(-74 234 275)" pointer-events="none">CƠ ỨC ĐÒN CHŨM</text>
+                </svg>
+              </div>
+              <div class="lg:col-span-5 bg-slate-50 rounded-2xl border border-slate-200 p-5 space-y-3" id="info-panel-neck">
+                <span class="inline-block px-2.5 py-0.5 rounded-md bg-teal-100 text-teal-800 text-[11px] font-bold">Nhóm hạch đang chọn</span>
+                <h4 class="font-bold text-base text-slate-900" data-info-title>Nhóm hạch IB – Hạch dưới hàm</h4>
+                <p class="text-xs sm:text-sm text-slate-600 leading-relaxed" data-info-desc>Nằm trong tam giác dưới hàm (bụng trước, bụng sau cơ nhị thân và bờ dưới XHD), bao quanh tuyến dưới hàm.</p>
+                <div class="p-3 rounded-xl bg-white border border-slate-200 text-xs text-slate-700 leading-relaxed" data-info-clinical>
+                  <strong>Vùng dẫn lưu:</strong> Da–niêm mạc má, phần thấp khoang mũi, môi trên/dưới, sàn miệng, phần trước lưỡi, khẩu cái cứng/mềm, sống hàm và nhận mạch đi từ IA.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- MEDIA SLOT 3: LYMPH NODES -->
+          <div class="media-slot-wrapper" data-slot-id="slot-lymph-nodes" data-slot-title="Hình minh họa 3: Hệ thống hạch bạch huyết đầu mặt & 6 nhóm hạch cổ" data-slot-hint="Gợi ý: Ảnh sơ đồ chuỗi hạch mang tai, hạch sau hầu, hạch má-mặt và bản đồ phẫu thuật 6 nhóm hạch cổ."></div>
+        </section>
+
+        <!-- SECTION 3: KHOANG MIỆNG & KHẨU HẦU -->
+        <section id="sec-oral-cavity" class="scroll-mt-20 space-y-8 searchable-section">
+          <div class="flex items-center gap-3">
+            <span class="w-9 h-9 rounded-xl bg-teal-600 text-white font-bold flex items-center justify-center shadow-sm">03</span>
+            <div>
+              <h2 class="text-xl sm:text-2xl font-bold text-slate-900">Giải phẫu bề mặt Khoang Miệng & Khẩu Hầu</h2>
+              <p class="text-xs sm:text-sm text-slate-500">Khoang miệng chia làm 2 phần chính: Tiền đình miệng (hành lang) và Khoang miệng chính</p>
+            </div>
+          </div>
+
+          <!-- 3.1 - 3.3: MÔI, TIỀN ĐÌNH & NƯỚU -->
+          <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs space-y-6">
+            <div class="border-b border-slate-100 pb-3">
+              <h3 class="text-lg font-bold text-slate-900">3.1 – 3.3. Môi, Tiền đình miệng, Nướu & Niêm mạc xương ổ răng</h3>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <!-- 3.1 Lips -->
+              <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2.5">
+                <h4 class="font-bold text-slate-900 text-sm flex items-center gap-2">
+                  <span class="px-2 py-0.5 rounded bg-teal-600 text-white text-[11px]">3.1</span> Môi
+                </h4>
+                <ul class="text-xs sm:text-sm text-slate-600 space-y-2 leading-relaxed">
+                  <li>• <strong>Cấu trúc ngoài:</strong> Ở giữa môi trên có <strong>củ môi trên</strong>, phía trên củ môi là rãnh dọc gọi là <strong>nhân trung</strong>. Ranh giới môi – má là <strong>rãnh mũi – môi</strong> (từ cánh mũi đến khóe môi; có 3 dạng: <em>thẳng, cong lồi, cong lõm</em>). Ở người lớn tuổi xuất hiện thêm <em>rãnh bờ môi</em> từ khóe môi xuống dưới.</li>
+                  <li>• <strong>Vùng chuyển tiếp:</strong> Nơi tiếp xúc môi trên – dưới là <strong>đường ướt</strong>. Phía ngoài đường ướt là <strong>vành môi (môi đỏ)</strong> cấu tạo bởi biểu mô gai lát tầng sừng hóa mỏng, không có phần phụ của da hay tuyến nước bọt phụ (thỉnh thoảng có tuyến bã gần khóe mép). Ranh giới với da ngoài là <strong>viền môi đỏ</strong>.</li>
+                  <li>• <strong>Niêm mạc môi & Khóe môi:</strong> Phía trong đường ướt là niêm mạc môi (không sừng hóa, màu hồng, chứa nhiều tuyến nước bọt phụ tiết nhầy). Hai môi gặp nhau ở <strong>khóe môi</strong>, tương ứng vị trí răng nanh hàm trên và răng cối nhỏ hàm dưới.</li>
+                </ul>
+              </div>
+
+              <!-- 3.2 Vestibule -->
+              <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2.5">
+                <h4 class="font-bold text-slate-900 text-sm flex items-center gap-2">
+                  <span class="px-2 py-0.5 rounded bg-indigo-600 text-white text-[11px]">3.2</span> Tiền đình & Đáy hành lang miệng
+                </h4>
+                <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                  Là khoảng hình móng ngựa giữa môi/má (ngoài) và răng/xương ổ răng (trong). Khi cắn chặt, tiền đình thông với khoang miệng chính qua <strong>khe sau các răng cối lớn</strong>.
+                </p>
+                <div class="bg-white p-3.5 rounded-xl border border-slate-200 space-y-1.5">
+                  <p class="text-xs font-bold text-slate-800">Đáy hành lang miệng (nơi niêm mạc môi/má gập lại nối niêm mạc XỔR) có 6 thắng (nếp gấp hình liềm):</p>
+                  <ul class="text-xs text-slate-600 space-y-1">
+                    <li>• <strong>Thắng môi trên:</strong> Đường giữa, giữa hai răng cửa giữa, cách gai nướu <strong>4–7 mm</strong>.</li>
+                    <li>• <strong>Thắng môi dưới:</strong> Đường giữa, giữa hai răng cửa giữa hàm dưới.</li>
+                    <li>• <strong>4 thắng má:</strong> Nằm gần vị trí răng cối nhỏ thứ nhất hoặc răng nanh hai bên.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- 3.3 Gingiva -->
+            <div class="space-y-4">
+              <h4 class="font-bold text-slate-900 text-sm flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded bg-pink-600 text-white text-[11px]">3.3</span> Nướu và Niêm mạc xương ổ răng
+              </h4>
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="p-4 rounded-xl bg-pink-50/50 border border-pink-200 space-y-1.5">
+                  <span class="text-[11px] font-bold uppercase text-pink-700">Nướu dính</span>
+                  <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                    Biểu mô sừng hóa, không di động, dính chặt xương ổ răng; màu <strong>hồng nhạt</strong>, bề mặt <strong>lấm tấm da cam</strong>, chiều rộng thay đổi từ <strong>2–7 mm</strong>.
+                  </p>
+                </div>
+                <div class="p-4 rounded-xl bg-teal-50/50 border border-teal-200 space-y-1.5">
+                  <span class="text-[11px] font-bold uppercase text-teal-700">Nướu rời & Khe nướu</span>
+                  <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                    <strong>Nướu rời (nướu viền):</strong> Dạng cổ áo quanh cổ răng cao khoảng <strong>1 mm</strong>, bờ tròn nhẵn, sừng hóa, không lấm tấm da cam. Giữa nướu rời và răng là <strong>khe nướu</strong> (bình thường <strong>0,5–2 mm</strong>; lâm sàng <strong>&gt; 3 mm</strong> là bệnh lý – <em>túi nha chu</em>). Khoảng 50% có <em>rãnh nướu rời</em> ngang đường nối men – xê măng.
+                  </p>
+                </div>
+                <div class="p-4 rounded-xl bg-rose-50/50 border border-rose-200 space-y-1.5">
+                  <span class="text-[11px] font-bold uppercase text-rose-700">Niêm mạc xương ổ răng</span>
+                  <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                    Nằm về phía chóp chân răng, không dính chặt màng xương, mỏng, <strong>màu đỏ sậm</strong> (biểu mô gai lát tầng không sừng hóa, thấy rõ mạng mạch máu nhỏ bên dưới).
+                  </p>
+                </div>
+              </div>
+              <div class="p-3.5 rounded-xl bg-amber-50 border border-amber-200 text-xs sm:text-sm text-amber-950 space-y-1">
+                <p>• <strong>Gai nướu:</strong> Hình tam giác nằm giữa các răng liền kề (gồm mặt ngoài, mặt trong và vùng trung gian dạng lõm).</p>
+                <p>• <strong>Đường nối nướu – niêm mạc:</strong> Ranh giới giữa nướu dính (hồng nhạt, không di động) và niêm mạc xương ổ răng (đỏ sậm, di động), nằm dưới gờ đỉnh xương ổ <strong>3–5 mm</strong>. <strong>Lưu ý:</strong> Ở mặt khẩu cái hàm trên <strong>không có</strong> đường nối này vì toàn bộ niêm mạc khẩu cái đều là niêm mạc nhai sừng hóa.</p>
+              </div>
+            </div>
+
+            <!-- INTERACTIVE SVG DIAGRAM 2: GINGIVA -->
+            <div class="bg-slate-50 rounded-2xl border border-slate-200 p-4">
+              <div class="flex items-center justify-between mb-3">
+                <span class="text-xs font-bold uppercase tracking-wider text-pink-700">Sơ đồ Vector Tương tác: Mặt cắt Nướu & Đường nối nướu – niêm mạc</span>
+                <span class="text-[11px] text-slate-500">Chạm vào từng lớp mô trên hình</span>
+              </div>
+              <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-center">
+                <div class="lg:col-span-7 bg-white rounded-xl border border-slate-200 p-3 flex items-center justify-center">
+                  <svg class="w-full max-w-md h-auto" viewBox="0 0 520 390" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M 275 45 Q 345 40 368 105 Q 375 145 360 175 L 275 175 Z" fill="#ffffff" stroke="#64748b" stroke-width="2" />
+                    <text x="320" y="115" text-anchor="middle" font-size="11" font-weight="700" fill="#334155">Men răng</text>
+                    <path d="M 275 175 L 360 175 L 342 365 L 275 365 Z" fill="#fef3c7" stroke="#d97706" stroke-width="1.8" />
+                    <text x="318" y="275" text-anchor="middle" font-size="11" font-weight="700" fill="#92400e">Chân răng (Xê măng)</text>
+                    <line x1="270" y1="175" x2="365" y2="175" stroke="#0f172a" stroke-width="2.5" />
+                    <text x="372" y="179" font-size="10" font-weight="700" fill="#0f172a">Đường nối Men–Xê măng</text>
+                    <path d="M 205 215 Q 245 205 268 218 L 268 365 L 205 365 Z" fill="#e2e8f0" stroke="#475569" stroke-width="1.8" />
+                    <text x="236" y="295" text-anchor="middle" font-size="10.5" font-weight="700" fill="#334155">Xương ổ</text>
+                    <text x="236" y="310" text-anchor="middle" font-size="10.5" font-weight="700" fill="#334155">răng</text>
+
+                    <path d="M 242 142 Q 258 135 268 155 L 268 175 L 222 175 Z" fill="#f9a8d4" stroke="#db2777" stroke-width="1.8" class="svg-hotspot" data-group="gingiva" data-region="ging-free" />
+                    <line x1="271" y1="144" x2="271" y2="175" stroke="#0d9488" stroke-width="4" class="svg-hotspot" data-group="gingiva" data-region="ging-sulcus" />
+                    <text x="82" y="148" font-size="10.5" font-weight="700" fill="#be185d">Nướu rời (~1 mm)</text>
+                    <text x="82" y="165" font-size="10.5" font-weight="700" fill="#0f766e">Khe nướu (0,5–2 mm)</text>
+
+                    <path d="M 222 175 L 268 175 L 268 218 Q 245 205 205 215 L 185 268 L 222 175 Z" fill="#f472b6" stroke="#db2777" stroke-width="1.8" class="svg-hotspot" data-group="gingiva" data-region="ging-attached" />
+                    <circle cx="212" cy="202" r="1.5" fill="#9d174d" pointer-events="none" />
+                    <circle cx="204" cy="222" r="1.5" fill="#9d174d" pointer-events="none" />
+                    <circle cx="212" cy="235" r="1.5" fill="#9d174d" pointer-events="none" />
+                    <circle cx="198" cy="248" r="1.5" fill="#9d174d" pointer-events="none" />
+                    <text x="52" y="226" font-size="10.5" font-weight="700" fill="#9d174d">Nướu dính (2–7 mm)</text>
+                    <text x="52" y="240" font-size="9.5" fill="#831843">Hồng nhạt, lấm tấm da cam</text>
+
+                    <line x1="135" y1="268" x2="205" y2="268" stroke="#0f172a" stroke-width="3" class="svg-hotspot active" data-group="gingiva" data-region="ging-mgj" />
+                    <circle cx="185" cy="268" r="5" fill="#0f172a" class="svg-hotspot active" data-group="gingiva" data-region="ging-mgj" />
+                    <text x="24" y="264" font-size="10.5" font-weight="800" fill="#0f172a">Đường nối nướu–niêm mạc</text>
+                    <text x="24" y="278" font-size="9.5" fill="#475569">(Dưới đỉnh xương ổ 3–5 mm)</text>
+
+                    <path d="M 185 268 L 205 268 L 205 365 L 155 365 Q 165 315 185 268 Z" fill="#e11d48" stroke="#9f1239" stroke-width="1.8" class="svg-hotspot" data-group="gingiva" data-region="ging-mucosa" />
+                    <text x="34" y="326" font-size="10.5" font-weight="700" fill="#be123c">Niêm mạc xương ổ răng</text>
+                    <text x="34" y="340" font-size="9.5" fill="#881337">Đỏ sậm, di động, giàu mạch máu</text>
+                  </svg>
+                </div>
+                <div class="lg:col-span-5 bg-white rounded-xl border border-slate-200 p-5 space-y-3" id="info-panel-gingiva">
+                  <span class="inline-block px-2.5 py-0.5 rounded-md bg-pink-100 text-pink-800 text-[11px] font-bold">Cấu trúc nha chu đang chọn</span>
+                  <h4 class="font-bold text-base text-slate-900" data-info-title>Đường nối nướu – niêm mạc</h4>
+                  <p class="text-xs sm:text-sm text-slate-600 leading-relaxed" data-info-desc>Ranh giới sắc nét giữa nướu dính (hồng nhạt, không di động) và niêm mạc xương ổ răng (đỏ sậm, di động), nằm dưới gờ đỉnh xương ổ 3–5 mm.</p>
+                  <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-700 leading-relaxed" data-info-clinical>
+                    <strong>Lưu ý lâm sàng:</strong> Ở mặt khẩu cái hàm trên KHÔNG có đường nối này vì toàn bộ niêm mạc khẩu cái đều là niêm mạc nhai sừng hóa.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- MEDIA SLOT 4: LIPS, VESTIBULE & GINGIVA -->
+            <div class="media-slot-wrapper" data-slot-id="slot-lips-gingiva" data-slot-title="Hình minh họa 4: Hình ảnh lâm sàng Môi, Tiền đình miệng, Thắng & Nướu răng" data-slot-hint="Gợi ý: Ảnh lâm sàng đường ướt môi, thắng môi trên/dưới, nướu dính lấm tấm da cam và đường nối nướu - niêm mạc."></div>
+          </div>
+
+          <!-- 3.4 - 3.5A: MÁ, KHẨU CÁI CỨNG & KHẨU CÁI MỀM -->
+          <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs space-y-6">
+            <div class="border-b border-slate-100 pb-3">
+              <h3 class="text-lg font-bold text-slate-900">3.4 – 3.5a. Má, Khẩu cái cứng và Khẩu cái mềm</h3>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+              <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
+                <h4 class="font-bold text-slate-900 text-sm flex items-center gap-2">
+                  <span class="px-2 py-0.5 rounded bg-teal-600 text-white text-[11px]">3.4</span> Má
+                </h4>
+                <p class="text-xs text-slate-600">Cấu tạo bởi cơ mút, cục mỡ Bichat, da ngoài và niêm mạc má (biểu mô lát tầng không sừng hóa, nhiều tuyến nước bọt phụ):</p>
+                <ul class="text-xs text-slate-700 space-y-1.5 pt-1">
+                  <li>• <strong>Gai mang tai:</strong> Nếp gấp nhỏ đối diện <strong>răng cối lớn thứ nhất hàm trên</strong>, nơi đổ vào của <strong>ống Stensen</strong> (tuyến mang tai).</li>
+                  <li>• <strong>Đường nhai:</strong> Đường trắng nằm ngang tương ứng mặt nhai các răng cối do cọ xát.</li>
+                  <li>• <strong>Củ mép:</strong> Khối gồ nhẹ màu sắc bình thường ở niêm mạc má gần khóe môi.</li>
+                  <li>• <strong>Nếp gấp niêm mạc trên đường đan chân bướm – hàm:</strong> Giới hạn sau của niêm mạc má. Khoảng giữa nếp gấp này và cành lên XHD là mốc giải phẫu quan trọng để đâm kim gây tê thần kinh xương ổ răng dưới.</li>
+                </ul>
+              </div>
+
+              <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
+                <h4 class="font-bold text-slate-900 text-sm flex items-center gap-2">
+                  <span class="px-2 py-0.5 rounded bg-indigo-600 text-white text-[11px]">3.5a</span> Khẩu cái cứng
+                </h4>
+                <p class="text-xs text-slate-600">3/4 trước là mỏm khẩu cái xương hàm trên, 1/4 sau là mảnh ngang xương khẩu cái:</p>
+                <ul class="text-xs text-slate-700 space-y-1.5 pt-1">
+                  <li>• <strong>Gai cửa (gai khẩu):</strong> Khối mô nhô hình bầu dục ngay sau hai răng cửa giữa hàm trên, che phủ <strong>lỗ cửa (lỗ ống mũi – khẩu)</strong>.</li>
+                  <li>• <strong>Đường đan giữa khẩu cái:</strong> Dải mô sợi màu vàng trắng chạy dọc đường giữa.</li>
+                  <li>• <strong>Vân ngang khẩu cái:</strong> Các gờ mô sợi chạy ngang hai bên ở 1/3 trước khẩu cái cứng.</li>
+                  <li>• <strong>Giới hạn sau:</strong> Hai bên là <strong>lồi cùng</strong> (lồi củ XHT); ở giữa là <strong>hai trũng khẩu cái</strong> (lỗ đổ tuyến nước bọt phụ, mốc phân định ranh giới với khẩu cái mềm).</li>
+                </ul>
+              </div>
+
+              <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
+                <h4 class="font-bold text-slate-900 text-sm flex items-center gap-2">
+                  <span class="px-2 py-0.5 rounded bg-amber-600 text-white text-[11px]">3.5b</span> Khẩu cái mềm (màn khẩu cái)
+                </h4>
+                <p class="text-xs text-slate-600">Không có xương nâng đỡ bên dưới, màu sắc khác biệt với khẩu cái cứng:</p>
+                <ul class="text-xs text-slate-700 space-y-1.5 pt-1">
+                  <li>• Ở giữa có <strong>lưỡi gà</strong> rủ xuống.</li>
+                  <li>• Hai bên có hai nếp gấp niêm mạc: <strong>cung khẩu cái lưỡi</strong> (trụ trước amiđan) và <strong>cung khẩu cái hầu</strong> (trụ sau amiđan), giới hạn nên <strong>hố hạnh nhân</strong> chứa <strong>amiđan khẩu cái</strong>.</li>
+                  <li>• Phía dưới hai bên là <strong>tam giác hậu hàm (gối hậu nha)</strong> và <strong>nếp gấp chân bướm – hàm</strong> (ranh giới giữa má và họng).</li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- MEDIA SLOT 5: CHEEK & PALATE -->
+            <div class="media-slot-wrapper" data-slot-id="slot-cheek-palate" data-slot-title="Hình minh họa 5: Niêm mạc Má (Gai mang tai, đường nhai) & Khẩu cái cứng / mềm" data-slot-hint="Gợi ý: Ảnh lâm sàng gai mang tai đối diện RCL1 trên, đường đan chân bướm hàm, gai cửa, vân ngang khẩu cái, lưỡi gà và hố hạnh nhân."></div>
+          </div>
+
+          <!-- 3.5B - 3.6: LƯỠI, SÀN MIỆNG & KHẨU HẦU / VÒNG WALDEYER -->
+          <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs space-y-6">
+            <div class="border-b border-slate-100 pb-3">
+              <h3 class="text-lg font-bold text-slate-900">3.5c – 3.6. Lưỡi, Sàn miệng, Khẩu hầu & Vòng bạch huyết Waldeyer</h3>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+              <!-- Tongue -->
+              <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-3">
+                <h4 class="font-bold text-slate-900 text-sm flex items-center gap-2">
+                  <span class="px-2 py-0.5 rounded bg-rose-600 text-white text-[11px]">Lưỡi</span> Mặt lưng & Mặt bụng lưỡi
+                </h4>
+                <p class="text-xs text-slate-600 leading-relaxed">
+                  <strong>Rãnh tận</strong> (hình chữ V, đỉnh hướng ra sau) chia lưỡi thành <strong>2/3 trước (thân lưỡi)</strong> thuộc khoang miệng và <strong>1/3 sau (đáy lưỡi)</strong> thuộc khẩu hầu. Tại đỉnh chữ V trên đường giữa có <strong>lỗ tịt</strong> (nguồn gốc phôi thai của tuyến giáp).
+                </p>
+                <div class="bg-white p-3.5 rounded-xl border border-slate-200 space-y-1.5">
+                  <p class="text-xs font-bold text-teal-800">Mặt lưng lưỡi có rãnh lưỡi giữa & 4 loại gai lưỡi:</p>
+                  <ul class="text-xs text-slate-700 space-y-1.5">
+                    <li><strong>1. Gai chỉ:</strong> Nhiều nhất, mảnh như sợi chỉ, sừng hóa, màu hồng nhạt/trắng, chức năng bảo vệ (<em>không chứa nụ vị giác</em>).</li>
+                    <li><strong>2. Gai nấm:</strong> Khoảng <strong>300–500 nhú</strong> tròn, đỏ tươi, không sừng hóa, chứa 2–4 nụ vị giác mỗi gai, tập trung nhiều ở đầu và bờ lưỡi.</li>
+                    <li><strong>3. Gai đài:</strong> Lớn nhất (đường kính <strong>2–4 mm</strong>), gồm <strong>8–12 gai</strong> xếp thành hình chữ V (<strong>V lưỡi</strong>) ngay phía trước rãnh tận.</li>
+                    <li><strong>4. Gai lá:</strong> Các nếp gấp song song ở hai bên bờ lưỡi phía sau (gần cung khẩu lưỡi), rõ ở trẻ em/thanh thiếu niên.</li>
+                  </ul>
+                </div>
+                <p class="text-xs text-slate-600 leading-relaxed">
+                  • <strong>1/3 sau lưng lưỡi:</strong> Chứa các khối mô lymphô nhô cao gọi là <strong>amiđan lưỡi</strong>.<br>
+                  • <strong>Mặt bụng lưỡi:</strong> Niêm mạc mỏng không sừng hóa. Ở giữa có <strong>thắng lưỡi</strong>, hai bên thấy rõ <strong>tĩnh mạch sâu dưới lưỡi</strong> và phía ngoài là <strong>nếp gấp bụng lưỡi</strong>.
+                </p>
+              </div>
+
+              <!-- Floor of mouth & Oropharynx -->
+              <div class="space-y-4">
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
+                  <h4 class="font-bold text-slate-900 text-sm flex items-center gap-2">
+                    <span class="px-2 py-0.5 rounded bg-indigo-600 text-white text-[11px]">Sàn miệng</span> Cấu trúc & Ống tiết tuyến nước bọt
+                  </h4>
+                  <ul class="text-xs text-slate-700 space-y-2 leading-relaxed">
+                    <li>• <strong>Nền cơ học:</strong> Là <strong>cơ hàm móng</strong> (mốc phẫu thuật ngăn cách vùng miệng và vùng cổ).</li>
+                    <li>• <strong>Dải dưới lưỡi:</strong> Dưới niêm mạc sàn miệng hình chữ U có dải dưới lưỡi (hai nếp mô tạo hình chữ V gặp nhau tại thắng lưỡi) chứa các lỗ đổ <strong>ống Rivinus</strong> của tuyến dưới lưỡi.</li>
+                    <li>• <strong>Gai dưới lưỡi:</strong> Tận cùng phía trước dải dưới lưỡi (hai bên chân thắng lưỡi) có hai nhú nhỏ, nơi đổ vào của <strong>ống Wharton</strong> (tuyến dưới hàm) và đôi khi là <strong>ống Bartholin</strong> (tuyến dưới lưỡi).</li>
+                  </ul>
+                </div>
+
+                <div class="p-4 rounded-xl bg-teal-50/60 border border-teal-200 space-y-2">
+                  <h4 class="font-bold text-teal-950 text-sm flex items-center gap-2">
+                    <span class="px-2 py-0.5 rounded bg-teal-700 text-white text-[11px]">3.6</span> Khẩu hầu & Vòng bạch huyết Waldeyer
+                  </h4>
+                  <ul class="text-xs text-slate-700 space-y-1.5 leading-relaxed">
+                    <li>• <strong>Hầu:</strong> Ống sợi cơ đi từ nền sọ đến bờ dưới sụn nhẫn (ngang <strong>C6</strong>), chia 3 phần: <em>tỵ hầu, khẩu hầu, thanh hầu</em>.</li>
+                    <li>• <strong>Khẩu hầu (hầu miệng):</strong> Thông với khoang miệng qua <strong>eo họng</strong> (giới hạn: trên là lưỡi gà và bờ tự do khẩu cái mềm, ngoài là cung khẩu cái lưỡi, dưới là lưng lưỡi ngang mức rãnh tận). Thành sau hầu trải dài từ <strong>C2 đến C4</strong>.</li>
+                    <li>• <strong>Vòng bạch huyết quanh hầu (Vòng Waldeyer):</strong> Gồm <strong>amiđan vòm, amiđan vòi, amiđan khẩu cái và amiđan lưỡi</strong>. Tăng kích thước tối đa đến khoảng <strong>7–10 tuổi</strong>, sau đó thoái triển dần tới tuổi dậy thì.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- INTERACTIVE SVG DIAGRAM 3: TONGUE -->
+            <div class="bg-slate-50 rounded-2xl border border-slate-200 p-4">
+              <div class="flex items-center justify-between mb-3">
+                <span class="text-xs font-bold uppercase tracking-wider text-rose-700">Sơ đồ Vector Tương tác: Mặt lưng Lưỡi & Khẩu hầu</span>
+                <span class="text-[11px] text-slate-500">Chạm vào từng loại gai lưỡi / amiđan để xem chi tiết</span>
+              </div>
+              <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-center">
+                <div class="lg:col-span-7 bg-white rounded-xl border border-slate-200 p-3 flex items-center justify-center">
+                  <svg class="w-full max-w-md h-auto" viewBox="0 0 520 390" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M 110 110 Q 170 40 260 45 Q 350 40 410 110" fill="none" stroke="#f43f5e" stroke-width="12" stroke-linecap="round" class="svg-hotspot" data-group="tongue" data-region="tongue-palate" />
+                    <path d="M 248 45 Q 260 92 272 45 Z" fill="#fb7185" stroke="#e11d48" stroke-width="1.5" class="svg-hotspot" data-group="tongue" data-region="tongue-palate" />
+                    <text x="260" y="30" text-anchor="middle" font-size="10.5" font-weight="700" fill="#be123c">Khẩu cái mềm & Lưỡi gà</text>
+
+                    <ellipse cx="145" cy="122" rx="16" ry="26" fill="#fda4af" stroke="#e11d48" stroke-width="1.5" class="svg-hotspot" data-group="tongue" data-region="tongue-tonsil" />
+                    <ellipse cx="375" cy="122" rx="16" ry="26" fill="#fda4af" stroke="#e11d48" stroke-width="1.5" class="svg-hotspot" data-group="tongue" data-region="tongue-tonsil" />
+                    <text x="68" y="125" font-size="10" font-weight="700" fill="#9f1239">Amiđan khẩu cái</text>
+
+                    <path d="M 162 135 Q 260 100 358 135 L 348 195 L 260 225 L 172 195 Z" fill="#fecdd3" stroke="#f43f5e" stroke-width="1.8" class="svg-hotspot" data-group="tongue" data-region="tongue-base" />
+                    <circle cx="220" cy="155" r="9" fill="#fb7185" pointer-events="none" />
+                    <circle cx="246" cy="148" r="10" fill="#fb7185" pointer-events="none" />
+                    <circle cx="274" cy="148" r="10" fill="#fb7185" pointer-events="none" />
+                    <circle cx="300" cy="155" r="9" fill="#fb7185" pointer-events="none" />
+                    <text x="260" y="132" text-anchor="middle" font-size="10" font-weight="700" fill="#881337" pointer-events="none">1/3 Sau: Amiđan lưỡi</text>
+
+                    <path d="M 172 195 L 260 225 L 348 195 Q 375 295 320 348 Q 260 382 200 348 Q 145 295 172 195 Z" fill="#ffe4e6" stroke="#e11d48" stroke-width="2" class="svg-hotspot" data-group="tongue" data-region="tongue-filiform" />
+                    <line x1="260" y1="225" x2="260" y2="355" stroke="#f43f5e" stroke-width="1.5" stroke-dasharray="4 3" pointer-events="none" />
+
+                    <polyline points="175,193 260,225 345,193" fill="none" stroke="#0f766e" stroke-width="3.5" stroke-linecap="round" class="svg-hotspot" data-group="tongue" data-region="tongue-sulcus" />
+                    <circle cx="260" cy="225" r="6" fill="#0d9488" stroke="#ffffff" stroke-width="1.5" class="svg-hotspot" data-group="tongue" data-region="tongue-sulcus" />
+                    <text x="415" y="196" font-size="10" font-weight="700" fill="#0f766e">Rãnh tận & Lỗ tịt</text>
+
+                    <g class="svg-hotspot active" data-group="tongue" data-region="tongue-circumvallate">
+                      <circle cx="192" cy="190" r="6.5" fill="#be123c" stroke="#fff" stroke-width="1.2" />
+                      <circle cx="212" cy="198" r="6.5" fill="#be123c" stroke="#fff" stroke-width="1.2" />
+                      <circle cx="232" cy="206" r="6.5" fill="#be123c" stroke="#fff" stroke-width="1.2" />
+                      <circle cx="250" cy="213" r="6.5" fill="#be123c" stroke="#fff" stroke-width="1.2" />
+                      <circle cx="270" cy="213" r="6.5" fill="#be123c" stroke="#fff" stroke-width="1.2" />
+                      <circle cx="288" cy="206" r="6.5" fill="#be123c" stroke="#fff" stroke-width="1.2" />
+                      <circle cx="308" cy="198" r="6.5" fill="#be123c" stroke="#fff" stroke-width="1.2" />
+                      <circle cx="328" cy="190" r="6.5" fill="#be123c" stroke="#fff" stroke-width="1.2" />
+                    </g>
+                    <text x="54" y="196" font-size="10" font-weight="700" fill="#be123c">Gai đài (8–12 gai)</text>
+
+                    <g class="svg-hotspot" data-group="tongue" data-region="tongue-foliate">
+                      <rect x="163" y="212" width="12" height="32" rx="4" fill="#a855f7" opacity="0.85" />
+                      <rect x="345" y="212" width="12" height="32" rx="4" fill="#a855f7" opacity="0.85" />
+                    </g>
+                    <text x="82" y="234" font-size="10" font-weight="700" fill="#7e22ce">Gai lá (bờ sau)</text>
+
+                    <g class="svg-hotspot" data-group="tongue" data-region="tongue-fungiform">
+                      <circle cx="215" cy="330" r="4.5" fill="#e11d48" />
+                      <circle cx="238" cy="348" r="4.5" fill="#e11d48" />
+                      <circle cx="260" cy="354" r="4.5" fill="#e11d48" />
+                      <circle cx="282" cy="348" r="4.5" fill="#e11d48" />
+                      <circle cx="305" cy="330" r="4.5" fill="#e11d48" />
+                      <circle cx="192" cy="298" r="4.5" fill="#e11d48" />
+                      <circle cx="328" cy="298" r="4.5" fill="#e11d48" />
+                    </g>
+                    <text x="368" y="325" font-size="10" font-weight="700" fill="#e11d48">Gai nấm (300–500)</text>
+                    <text x="260" y="270" text-anchor="middle" font-size="10.5" font-weight="700" fill="#9f1239" pointer-events="none">Gai chỉ (phủ khắp 2/3 trước)</text>
+                  </svg>
+                </div>
+                <div class="lg:col-span-5 bg-white rounded-xl border border-slate-200 p-5 space-y-3" id="info-panel-tongue">
+                  <span class="inline-block px-2.5 py-0.5 rounded-md bg-rose-100 text-rose-800 text-[11px] font-bold">Cấu trúc lưỡi đang chọn</span>
+                  <h4 class="font-bold text-base text-slate-900" data-info-title>Gai đài (Circumvallate Papillae)</h4>
+                  <p class="text-xs sm:text-sm text-slate-600 leading-relaxed" data-info-desc>Lớn nhất (đường kính 2–4 mm), gồm 8–12 gai xếp thành hình chữ V (V lưỡi) ngay phía trước rãnh tận.</p>
+                  <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-700 leading-relaxed" data-info-clinical>
+                    <strong>Đặc điểm:</strong> Nằm ngay trước rãnh tận phân chia 2/3 trước (thân lưỡi) và 1/3 sau (đáy lưỡi).
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- MEDIA SLOT 6: TONGUE, FLOOR OF MOUTH & WALDEYER -->
+            <div class="media-slot-wrapper" data-slot-id="slot-tongue-floor" data-slot-title="Hình minh họa 6: Mặt lưng & bụng Lưỡi, Sàn miệng (ống Wharton/Rivinus) & Vòng Waldeyer" data-slot-hint="Gợi ý: Ảnh lâm sàng 4 loại gai lưỡi, mặt bụng lưỡi (tĩnh mạch dưới lưỡi), gai dưới lưỡi và vòng bạch huyết Waldeyer."></div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Image Lightbox Modal -->
+  <div id="lightboxModal" class="fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-xs hidden flex-col items-center justify-center p-4">
+    <div class="max-w-5xl w-full bg-white rounded-2xl overflow-hidden shadow-2xl">
+      <div class="px-5 py-3.5 border-b border-slate-200 flex items-center justify-between bg-slate-50">
+        <h3 id="lightboxTitle" class="font-bold text-sm sm:text-base text-slate-900 truncate pr-4">Xem hình minh họa</h3>
+        <button id="closeLightboxBtn" class="px-3 py-1.5 rounded-lg bg-slate-200 hover:bg-slate-300 text-slate-800 text-xs font-bold transition">Đóng (ESC)</button>
+      </div>
+      <div class="bg-slate-900 flex items-center justify-center max-h-[75vh] overflow-auto p-2">
+        <img id="lightboxImg" src="" alt="Hình minh họa phóng to" class="max-h-[72vh] w-auto object-contain rounded-lg" />
+      </div>
+      <div id="lightboxCaption" class="px-5 py-3 text-xs sm:text-sm text-slate-700 bg-white border-t border-slate-100"></div>
+    </div>
+  </div>
+
+  <!-- Application Script -->
+  <script>
+    // ==========================================
+    // 1. DATA: 11 VÙNG ĐẦU MẶT
+    // ==========================================
+    const faceRegionsData = [
+      {
+        id: 'parietal-occipital',
+        tier: 'upper',
+        tierLabel: 'Sọ & Tầng trên',
+        title: '1. Vùng đỉnh và chẩm',
+        landmarks: 'Da đầu và tóc bao phủ trên xương sọ.',
+        clinical: 'Ít liên quan trực tiếp khi khám Răng Hàm Mặt.'
+      },
+      {
+        id: 'frontal',
+        tier: 'upper',
+        tierLabel: 'Sọ & Tầng trên',
+        title: '2. Vùng trán (1/3 trên khuôn mặt)',
+        landmarks: 'Gờ trên ổ mắt (ngay dưới chân mày); Glabella (vùng giữa hai chân mày: phẳng ở trẻ em/nữ, nhô tròn ở nam); Lồi trán (giữa trán: nhô cao ở trẻ em/nữ trưởng thành).',
+        clinical: 'Liên quan mật thiết đến thẩm mỹ và chức năng của mắt, mũi.'
+      },
+      {
+        id: 'temporal',
+        tier: 'upper',
+        tierLabel: 'Sọ & Tầng trên',
+        title: '3. Vùng thái dương',
+        landmarks: 'Giới hạn: trên là viền hố thái dương, dưới là cung gò má, trước là bờ sau mỏm trán xương gò má và mỏm gò má xương trán.',
+        clinical: 'Chứa cơ thái dương (bám từ sàn hố thái dương đến mỏm vẹt và cành lên XHD). Thường sờ khám ở bệnh nhân có rối loạn thái dương hàm.'
+      },
+      {
+        id: 'auricular',
+        tier: 'middle',
+        tierLabel: 'Tầng giữa mặt',
+        title: '4. Vùng tai',
+        landmarks: 'Loa tai: vành tai, dái tai (tận cùng vành tai), xoắn tai bao bọc bởi 4 gờ (gờ luân, gờ đối luân, gờ bình tai, gờ đối bình tai) và khuyết gian bình. Phần cao nhất vành tai ngang mức chân mày và glabella. Mỏm chũm nhô ngay sau tai (nơi bám CƯĐC).',
+        clinical: 'Ống tai ngoài (1/3 ngoài sụn, 2/3 trong xương thái dương): thành trước liên quan hõm khớp và tuyến mang tai; chấn thương cằm có thể đẩy lồi cầu ra sau gây vỡ thành trước ống tai ngoài.'
+      },
+      {
+        id: 'orbital',
+        tier: 'middle',
+        tierLabel: 'Tầng giữa mặt',
+        title: '5. Vùng mắt',
+        landmarks: 'Đường vào ổ mắt hình vuông 4 góc tròn. Chiều rộng mỗi mắt ≈ khoảng cách giữa hai mắt. Cấu trúc: mí mắt trên/dưới, khóe mắt trong/ngoài, củng mạc, mống mắt, đồng tử, kết mạc.',
+        clinical: 'Tuyến lệ ở góc ngoài thành trên ổ mắt (10–12 ống tiết đổ vào vòm kết mạc trên). Ống lệ mũi đi từ túi lệ đổ vào ngách mũi dưới.'
+      },
+      {
+        id: 'nasal',
+        tier: 'middle',
+        tierLabel: 'Tầng giữa mặt',
+        title: '6. Vùng mũi',
+        landmarks: 'Mũi ngoài: gốc mũi, sống mũi (thân mũi), đỉnh mũi, hai lỗ mũi ngăn cách bởi vách ngăn mũi, cánh mũi (khoảng cách 2 cánh mũi ≈ chiều rộng mỗi mắt), rãnh mũi má.',
+        clinical: 'Vách ngăn mũi gồm mảnh thẳng xương sàng, xương lá mía (sau) và sụn vách ngăn (trước).'
+      },
+      {
+        id: 'infraorbital',
+        tier: 'middle',
+        tierLabel: 'Tầng giữa mặt',
+        title: '7. Vùng dưới ổ mắt',
+        landmarks: 'Nằm giữa mũi và xương gò má, dưới bờ dưới ổ mắt, trên chân răng nanh và răng cối nhỏ hàm trên.',
+        clinical: 'Chứa lỗ, động mạch và thần kinh dưới ổ mắt. Khoang dưới ổ mắt (khoang nanh): nhiễm trùng răng nanh hàm trên phá thủng vỏ xương ngoài trên chỗ bám cơ nâng góc miệng sẽ lan vào khoang này, có thể gây áp xe quanh/trong ổ mắt.'
+      },
+      {
+        id: 'zygomatic',
+        tier: 'middle',
+        tierLabel: 'Tầng giữa mặt',
+        title: '8. Vùng gò má & Khớp thái dương hàm',
+        landmarks: 'Nằm trên xương gò má và cung gò má (mấu gò má xương thái dương + mấu thái dương xương gò má).',
+        clinical: 'Dưới cung gò má, ngay trước gờ bình tai là khớp thái dương hàm (phần đá xương thái dương + lồi cầu XHD + đĩa khớp). Sờ khám được khi bệnh nhân há ngậm, đưa hàm sang bên/ra trước.'
+      },
+      {
+        id: 'buccal',
+        tier: 'middle',
+        tierLabel: 'Tầng giữa mặt',
+        title: '9. Vùng má',
+        landmarks: 'Nằm dưới mắt, giữa mũi, miệng và tai.',
+        clinical: 'Khoang má giới hạn: ngoài là da/mô dưới da, trong là cơ mút, trên là cung gò má, dưới là bờ dưới XHD, trước là cơ gò má lớn, sau là bờ trước cơ cắn. Nhiễm trùng răng cối nhỏ/lớn hai hàm có thể lan trực tiếp vào khoang má.'
+      },
+      {
+        id: 'parotid-masseteric',
+        tier: 'lower',
+        tierLabel: 'Tầng dưới mặt',
+        title: '10. Vùng mang tai – cơ cắn',
+        landmarks: 'Giới hạn: trên là cung gò má, dưới là bờ dưới vùng góc hàm, trước là bờ trước cơ cắn, sau là lỗ ống tai ngoài và mỏm chũm.',
+        clinical: 'Tuyến mang tai đổ vào miệng qua ống Stensen tại gai mang tai. Cơ cắn sờ rõ khi bệnh nhân cắn chặt/nghiến răng.'
+      },
+      {
+        id: 'mental',
+        tier: 'lower',
+        tierLabel: 'Tầng dưới mặt',
+        title: '11. Vùng cằm',
+        landmarks: 'Củ cằm (phần nhô nhất), rãnh môi – cằm (ngăn cách môi dưới và cằm, ở gần trung điểm từ đỉnh mũi đến cằm và ngang góc hàm), khuyết giữa (ở một số người, đánh dấu chỗ dung hợp XHD).',
+        clinical: 'Liên quan đến đánh giá thẩm mỹ tầng mặt dưới và chấn thương vùng cằm.'
+      }
+    ];
+
+    function renderFaceRegions(filter = 'all') {
+      const grid = document.getElementById('faceRegionsGrid');
+      const filtered = filter === 'all' ? faceRegionsData : faceRegionsData.filter(r => r.tier === filter);
+      grid.innerHTML = filtered.map(region => `
+        <article class="face-card bg-white rounded-2xl border border-slate-200 p-5 shadow-xs hover:border-teal-300 transition flex flex-col justify-between space-y-3">
+          <div>
+            <div class="flex items-center justify-between gap-2 mb-2">
+              <h3 class="font-bold text-slate-900 text-sm sm:text-base">${region.title}</h3>
+              <span class="text-[10px] font-semibold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-600 shrink-0">${region.tierLabel}</span>
+            </div>
+            <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+              <strong class="text-slate-800">Mốc bề mặt:</strong> ${region.landmarks}
+            </p>
+          </div>
+          <div class="p-3 rounded-xl bg-teal-50/60 border border-teal-100 text-xs text-slate-700 leading-relaxed">
+            <strong class="text-teal-800">Cấu trúc sâu & Lâm sàng:</strong> ${region.clinical}
+          </div>
+        </article>
+      `).join('');
+    }
+
+    document.querySelectorAll('.face-filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.face-filter-btn').forEach(b => {
+          b.classList.remove('active', 'bg-teal-600', 'text-white');
+          b.classList.add('bg-white', 'text-slate-600', 'border', 'border-slate-200');
+        });
+        btn.classList.add('active', 'bg-teal-600', 'text-white');
+        btn.classList.remove('bg-white', 'text-slate-600', 'border', 'border-slate-200');
+        renderFaceRegions(btn.dataset.filter);
+      });
+    });
+
+    // ==========================================
+    // 2. INTERACTIVE SVG HOTSPOTS LOGIC
+    // ==========================================
+    const diagramDetails = {
+      'neck-ia': {
+        title: 'Nhóm hạch IA – Hạch dưới cằm',
+        desc: 'Nằm trong tam giác dưới cằm (xương móng, bụng trước cơ nhị thân và đường giữa).',
+        clinical: 'Dẫn lưu vùng cằm, môi dưới, phần trước lưỡi và sàn miệng.'
+      },
+      'neck-ib': {
+        title: 'Nhóm hạch IB – Hạch dưới hàm',
+        desc: 'Nằm trong tam giác dưới hàm (bụng trước, bụng sau cơ nhị thân và bờ dưới XHD), bao quanh tuyến dưới hàm.',
+        clinical: 'Dẫn lưu da–niêm mạc má, phần thấp khoang mũi, môi trên/dưới, sàn miệng, phần trước lưỡi, khẩu cái cứng/mềm, sống hàm và nhận mạch đi từ IA.'
+      },
+      'neck-iia': {
+        title: 'Nhóm hạch IIA – Hạch cảnh trên (trước TK phụ)',
+        desc: '1/3 trên tĩnh mạch cảnh trong, từ nền sọ đến xương móng/ngã ba cảnh, nằm trước thần kinh phụ / bờ sau TM cảnh trong.',
+        clinical: 'Trạm dẫn lưu chủ chốt của khoang miệng và khẩu hầu.'
+      },
+      'neck-iib': {
+        title: 'Nhóm hạch IIB – Hạch cảnh trên (sau TK phụ)',
+        desc: '1/3 trên tĩnh mạch cảnh trong, nằm phía sau thần kinh phụ / bờ sau TM cảnh trong.',
+        clinical: 'U nguyên phát mũi hầu, khẩu hầu thường di căn nhóm IIB nhiều hơn.'
+      },
+      'neck-iii': {
+        title: 'Nhóm hạch III – Hạch cảnh giữa',
+        desc: '1/3 giữa tĩnh mạch cảnh trong, từ ngã ba cảnh đến khuyết nhẫn giáp / bờ dưới sụn nhẫn / cơ vai móng.',
+        clinical: 'Dẫn lưu đáy lưỡi, thanh quản, hạ hầu, tuyến giáp và nhận mạch đi từ nhóm II, V.'
+      },
+      'neck-iv': {
+        title: 'Nhóm hạch IV – Hạch cảnh dưới',
+        desc: '1/3 dưới tĩnh mạch cảnh trong, từ bờ trên cơ vai móng đến xương đòn.',
+        clinical: 'Ung thư vùng cổ dưới (như thanh quản) có xu hướng di căn các nhóm thấp hơn (nhóm III, IV).'
+      },
+      'neck-va': {
+        title: 'Nhóm hạch VA – Tam giác cổ sau (phần trên)',
+        desc: 'Phía trên mặt phẳng bờ dưới sụn nhẫn trong tam giác cổ sau.',
+        clinical: 'Chứa chuỗi hạch dọc dây thần kinh phụ (XI).'
+      },
+      'neck-vb': {
+        title: 'Nhóm hạch VB – Tam giác cổ sau (phần dưới)',
+        desc: 'Phía dưới mặt phẳng bờ dưới sụn nhẫn đến xương đòn.',
+        clinical: 'Chứa các hạch trên đòn.'
+      },
+      'neck-vi': {
+        title: 'Nhóm hạch VI – Khoang cổ trước',
+        desc: 'Từ xương móng đến khuyết trên ức, giới hạn hai bên là bờ trong bao cảnh.',
+        clinical: 'Gồm hạch quanh tuyến giáp, cận khí quản, dọc thần kinh thanh quản quặt ngược, trước nhẫn.'
+      },
+      'ging-free': {
+        title: 'Nướu rời (nướu viền)',
+        desc: 'Dạng cổ áo quanh cổ răng cao khoảng 1 mm, bờ tròn nhẵn, sừng hóa, không lấm tấm da cam.',
+        clinical: 'Khoảng 50% trường hợp có rãnh nướu rời ngăn cách nướu rời và nướu dính (ngang đường nối men – xê măng).'
+      },
+      'ging-sulcus': {
+        title: 'Khe nướu',
+        desc: 'Khoảng không gian giữa nướu rời và bề mặt răng.',
+        clinical: 'Chiều sâu bình thường 0,5–2 mm; lâm sàng > 3 mm được xem là bệnh lý – túi nha chu.'
+      },
+      'ging-attached': {
+        title: 'Nướu dính',
+        desc: 'Biểu mô sừng hóa, không di động, dính chặt xương ổ răng; màu hồng nhạt, bề mặt lấm tấm da cam, chiều rộng 2–7 mm.',
+        clinical: 'Bảo vệ nha chu chịu lực nhai; mất lấm tấm da cam là dấu hiệu sớm của phù nề viêm nướu.'
+      },
+      'ging-mgj': {
+        title: 'Đường nối nướu – niêm mạc',
+        desc: 'Ranh giới giữa nướu dính (hồng nhạt, không di động) và niêm mạc xương ổ răng (đỏ sậm, di động), nằm dưới gờ đỉnh xương ổ 3–5 mm.',
+        clinical: 'Ở mặt khẩu cái hàm trên KHÔNG có đường nối này vì toàn bộ niêm mạc khẩu cái đều là niêm mạc nhai sừng hóa.'
+      },
+      'ging-mucosa': {
+        title: 'Niêm mạc xương ổ răng',
+        desc: 'Nằm về phía chóp chân răng, không dính chặt màng xương, mỏng, màu đỏ sậm (biểu mô gai lát tầng không sừng hóa).',
+        clinical: 'Thấy rõ mạng mạch máu nhỏ bên dưới; thường rạch ở vùng này trong phẫu thuật nội nha/nhổ răng ngầm.'
+      },
+      'tongue-palate': {
+        title: 'Khẩu cái mềm & Lưỡi gà',
+        desc: 'Không có xương nâng đỡ bên dưới, màu sắc khác biệt với khẩu cái cứng; ở giữa có lưỡi gà rủ xuống.',
+        clinical: 'Cùng cung khẩu cái lưỡi và lưng lưỡi tạo nên eo họng.'
+      },
+      'tongue-tonsil': {
+        title: 'Amiđan khẩu cái (Hố hạnh nhân)',
+        desc: 'Nằm trong hố hạnh nhân giới hạn bởi cung khẩu cái lưỡi (trụ trước) và cung khẩu cái hầu (trụ sau).',
+        clinical: 'Thuộc vòng bạch huyết Waldeyer (tăng kích thước tối đa đến 7–10 tuổi rồi thoái triển dần tới dậy thì).'
+      },
+      'tongue-base': {
+        title: '1/3 Sau lưng lưỡi (Đáy lưỡi & Amiđan lưỡi)',
+        desc: 'Nằm sau rãnh tận, thuộc khẩu hầu; chứa các khối mô lymphô nhô cao gọi là amiđan lưỡi.',
+        clinical: 'Thuộc vòng bạch huyết quanh hầu Waldeyer.'
+      },
+      'tongue-sulcus': {
+        title: 'Rãnh tận & Lỗ tịt',
+        desc: 'Rãnh hình chữ V (đỉnh hướng ra sau) chia 2/3 trước và 1/3 sau lưỡi. Tại đỉnh chữ V trên đường giữa có lỗ tịt.',
+        clinical: 'Lỗ tịt là nguồn gốc phôi thai của tuyến giáp.'
+      },
+      'tongue-circumvallate': {
+        title: 'Gai đài',
+        desc: 'Lớn nhất (đường kính 2–4 mm), gồm 8–12 gai xếp thành hình chữ V (V lưỡi) ngay phía trước rãnh tận.',
+        clinical: 'Mốc quan trọng ngay trước rãnh tận phân định thân lưỡi và đáy lưỡi.'
+      },
+      'tongue-foliate': {
+        title: 'Gai lá',
+        desc: 'Các nếp gấp song song ở hai bên bờ lưỡi phía sau (gần cung khẩu lưỡi).',
+        clinical: 'Thấy rõ ở trẻ em và thanh thiếu niên.'
+      },
+      'tongue-fungiform': {
+        title: 'Gai nấm',
+        desc: 'Khoảng 300–500 nhú tròn, đỏ tươi, không sừng hóa, chứa 2–4 nụ vị giác mỗi gai.',
+        clinical: 'Tập trung nhiều ở đầu và bờ lưỡi.'
+      },
+      'tongue-filiform': {
+        title: 'Gai chỉ',
+        desc: 'Nhiều nhất, mảnh như sợi chỉ, sừng hóa, màu hồng nhạt/trắng.',
+        clinical: 'Chức năng bảo vệ (không chứa nụ vị giác).'
+      }
+    };
+
+    document.querySelectorAll('.svg-hotspot').forEach(el => {
+      el.addEventListener('click', () => {
+        const group = el.dataset.group;
+        const region = el.dataset.region;
+        const data = diagramDetails[region];
+        if (!data || !group) return;
+
+        document.querySelectorAll(`.svg-hotspot[data-group="${group}"]`).forEach(h => h.classList.remove('active'));
+        document.querySelectorAll(`.svg-hotspot[data-group="${group}"][data-region="${region}"]`).forEach(h => h.classList.add('active'));
+
+        const panel = document.getElementById(`info-panel-${group}`);
+        if (panel) {
+          panel.querySelector('[data-info-title]').textContent = data.title;
+          panel.querySelector('[data-info-desc]').textContent = data.desc;
+          panel.querySelector('[data-info-clinical]').innerHTML = `<strong>Ý nghĩa lâm sàng:</strong> ${data.clinical}`;
+        }
+      });
+    });
+
+    // ==========================================
+    // 3. CLINICAL IMAGE UPLOAD / URL / GALLERY SLOTS
+    // ==========================================
+    const STORAGE_KEY = 'odontohub_bai1_media_v1';
+    let mediaStore = {};
+
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) mediaStore = JSON.parse(saved);
+    } catch (e) {
+      console.warn('LocalStorage unavailable:', e);
+    }
+
+    function saveMediaStore() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(mediaStore));
+      } catch (e) {
+        showToast('Bộ nhớ trình duyệt đã đầy. Bạn có thể dùng nút "Lưu bản sao HTML kèm ảnh" để lưu trữ vĩnh viễn.');
+      }
+    }
+
+    function showToast(msg) {
+      let toast = document.getElementById('odontoToast');
+      if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'odontoToast';
+        toast.className = 'fixed bottom-5 right-5 z-50 max-w-sm bg-slate-900 text-white text-xs sm:text-sm px-4 py-3 rounded-2xl shadow-xl border border-slate-700 transition-opacity duration-300';
+        document.body.appendChild(toast);
+      }
+      toast.textContent = msg;
+      toast.style.opacity = '1';
+      clearTimeout(toast._timer);
+      toast._timer = setTimeout(() => {
+        toast.style.opacity = '0';
+      }, 4000);
+    }
+
+    function initMediaSlots() {
+      document.querySelectorAll('.media-slot-wrapper').forEach(wrapper => {
+        const slotId = wrapper.dataset.slotId;
+        const title = wrapper.dataset.slotTitle;
+        const hint = wrapper.dataset.slotHint;
+        if (!mediaStore[slotId]) mediaStore[slotId] = [];
+        renderMediaSlot(wrapper, slotId, title, hint);
+      });
+    }
+
+    function renderMediaSlot(wrapper, slotId, title, hint) {
+      const items = mediaStore[slotId] || [];
+
+      wrapper.innerHTML = `
+        <div class="rounded-2xl border-2 border-dashed border-slate-300 bg-slate-50/70 p-4 sm:p-5 transition media-dropzone" data-slot-id="${slotId}">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div class="flex items-start gap-3">
+              <div class="w-9 h-9 rounded-xl bg-teal-100 text-teal-700 flex items-center justify-center shrink-0 mt-0.5">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+              </div>
+              <div>
+                <h4 class="font-bold text-xs sm:text-sm text-slate-900">${title}</h4>
+                <p class="text-[11px] sm:text-xs text-slate-500 mt-0.5">${hint}</p>
+              </div>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-2 shrink-0">
+              <label class="cursor-pointer inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-teal-600 hover:bg-teal-700 text-white text-xs font-semibold shadow-xs transition">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                </svg>
+                <span>Tải ảnh từ máy</span>
+                <input type="file" accept="image/*" multiple class="hidden slot-file-input" />
+              </label>
+              <button type="button" class="toggle-url-btn inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 text-xs font-semibold transition">
+                <span>Dán URL ảnh</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- URL Input Bar (hidden by default) -->
+          <div class="url-input-row hidden mt-3 pt-3 border-t border-slate-200/80 flex flex-col sm:flex-row gap-2">
+            <input type="url" placeholder="https://example.com/hinh-giai-phau.jpg" class="slot-url-input flex-1 px-3 py-2 text-xs bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500" />
+            <input type="text" placeholder="Chú thích hình ảnh (tùy chọn)..." class="slot-url-caption flex-1 px-3 py-2 text-xs bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500" />
+            <button type="button" class="add-url-submit px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-900 text-white text-xs font-semibold transition">Chèn ảnh</button>
+          </div>
+
+          <!-- Uploaded Images Gallery -->
+          ${items.length > 0 ? `
+            <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              ${items.map((img, idx) => `
+                <div class="group bg-white rounded-xl border border-slate-200 overflow-hidden shadow-xs flex flex-col">
+                  <div class="relative aspect-video bg-slate-100 overflow-hidden cursor-zoom-in" onclick="openLightbox('${slotId}', ${idx})">
+                    <img src="${img.src}" alt="${img.caption || title}" class="w-full h-full object-cover group-hover:scale-103 transition duration-200" />
+                    <button type="button" onclick="event.stopPropagation(); deleteMediaItem('${slotId}', ${idx})" title="Xóa hình này" class="absolute top-2 right-2 w-7 h-7 rounded-lg bg-slate-900/75 hover:bg-rose-600 text-white text-xs font-bold flex items-center justify-center opacity-0 group-hover:opacity-100 transition">✕</button>
+                    <span class="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-slate-900/70 text-white text-[10px] font-medium">Nhấp để phóng to</span>
+                  </div>
+                  <div class="p-2.5 bg-white">
+                    <input
+                      type="text"
+                      value="${(img.caption || '').replace(/"/g, '&quot;')}"
+                      placeholder="Nhập chú thích giải phẫu cho hình này..."
+                      onchange="updateMediaCaption('${slotId}', ${idx}, this.value)"
+                      class="w-full text-xs text-slate-700 bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-teal-500"
+                    />
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          ` : `
+            <p class="text-[11px] text-slate-400 mt-2.5 text-center sm:text-left">
+              Chưa có hình ảnh đính kèm. Bạn có thể kéo & thả file ảnh trực tiếp vào khung này hoặc bấm "Tải ảnh từ máy".
+            </p>
+          `}
+        </div>
+      `;
+
+      // Bind File Input
+      const fileInput = wrapper.querySelector('.slot-file-input');
+      fileInput.addEventListener('change', e => handleFilesUpload(e.target.files, slotId, wrapper, title, hint));
+
+      // Bind Drag & Drop
+      const dropzone = wrapper.querySelector('.media-dropzone');
+      dropzone.addEventListener('dragover', e => {
+        e.preventDefault();
+        dropzone.classList.add('dropzone-active');
+      });
+      dropzone.addEventListener('dragleave', () => dropzone.classList.remove('dropzone-active'));
+      dropzone.addEventListener('drop', e => {
+        e.preventDefault();
+        dropzone.classList.remove('dropzone-active');
+        if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+          handleFilesUpload(e.dataTransfer.files, slotId, wrapper, title, hint);
+        }
+      });
+
+      // Bind URL Toggle & Submit
+      const toggleUrlBtn = wrapper.querySelector('.toggle-url-btn');
+      const urlRow = wrapper.querySelector('.url-input-row');
+      toggleUrlBtn.addEventListener('click', () => urlRow.classList.toggle('hidden'));
+
+      const urlSubmitBtn = wrapper.querySelector('.add-url-submit');
+      urlSubmitBtn.addEventListener('click', () => {
+        const urlVal = wrapper.querySelector('.slot-url-input').value.trim();
+        const capVal = wrapper.querySelector('.slot-url-caption').value.trim();
+        if (!urlVal) return;
+        mediaStore[slotId].push({ src: urlVal, caption: capVal || title });
+        saveMediaStore();
+        renderMediaSlot(wrapper, slotId, title, hint);
+        showToast('Đã chèn hình ảnh từ đường dẫn URL.');
+      });
+    }
+
+    function handleFilesUpload(files, slotId, wrapper, title, hint) {
+      Array.from(files).forEach(file => {
+        if (!file.type.startsWith('image/')) return;
+        const reader = new FileReader();
+        reader.onload = ev => {
+          // Compress image slightly via canvas if large so localStorage & HTML export stay fast
+          const img = new Image();
+          img.onload = () => {
+            const maxDim = 1400;
+            let w = img.width;
+            let h = img.height;
+            if (w > maxDim || h > maxDim) {
+              if (w > h) {
+                h = Math.round((h * maxDim) / w);
+                w = maxDim;
+              } else {
+                w = Math.round((w * maxDim) / h);
+                h = maxDim;
+              }
+            }
+            const canvas = document.createElement('canvas');
+            canvas.width = w;
+            canvas.height = h;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, w, h);
+            const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.86);
+
+            mediaStore[slotId].push({
+              src: compressedDataUrl,
+              caption: file.name.replace(/\.[^/.]+$/, '')
+            });
+            saveMediaStore();
+            renderMediaSlot(wrapper, slotId, title, hint);
+            showToast(`Đã thêm ảnh "${file.name}" vào bài học.`);
+          };
+          img.src = ev.target.result;
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    window.deleteMediaItem = function (slotId, idx) {
+      mediaStore[slotId].splice(idx, 1);
+      saveMediaStore();
+      const wrapper = document.querySelector(`.media-slot-wrapper[data-slot-id="${slotId}"]`);
+      if (wrapper) {
+        renderMediaSlot(wrapper, slotId, wrapper.dataset.slotTitle, wrapper.dataset.slotHint);
+      }
+    };
+
+    window.updateMediaCaption = function (slotId, idx, newCaption) {
+      if (mediaStore[slotId] && mediaStore[slotId][idx]) {
+        mediaStore[slotId][idx].caption = newCaption;
+        saveMediaStore();
+      }
+    };
+
+    // Lightbox Functions
+    window.openLightbox = function (slotId, idx) {
+      const item = mediaStore[slotId]?.[idx];
+      const wrapper = document.querySelector(`.media-slot-wrapper[data-slot-id="${slotId}"]`);
+      if (!item) return;
+      document.getElementById('lightboxTitle').textContent = wrapper ? wrapper.dataset.slotTitle : 'Hình minh họa lâm sàng';
+      document.getElementById('lightboxImg').src = item.src;
+      document.getElementById('lightboxCaption').textContent = item.caption || 'Chưa có chú thích cho hình ảnh này.';
+      const modal = document.getElementById('lightboxModal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    };
+
+    function closeLightbox() {
+      const modal = document.getElementById('lightboxModal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    document.getElementById('closeLightboxBtn').addEventListener('click', closeLightbox);
+    document.getElementById('lightboxModal').addEventListener('click', e => {
+      if (e.target.id === 'lightboxModal') closeLightbox();
+    });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeLightbox();
+    });
+
+    // Clear all temporary images
+    document.getElementById('clearAllMediaBtn').addEventListener('click', () => {
+      mediaStore = {};
+      localStorage.removeItem(STORAGE_KEY);
+      initMediaSlots();
+      showToast('Đã xóa toàn bộ hình ảnh tạm trên trình duyệt.');
+    });
+
+    // Export standalone HTML file with embedded images for GitHub repository
+    document.getElementById('exportHtmlBtn').addEventListener('click', () => {
+      const docClone = document.documentElement.cloneNode(true);
+      // Inject current mediaStore state directly into script initialization of cloned HTML
+      const scripts = docClone.querySelectorAll('script');
+      const mainScript = scripts[scripts.length - 1];
+      if (mainScript) {
+        const serializedStore = JSON.stringify(mediaStore);
+        mainScript.textContent = mainScript.textContent.replace(
+          'let mediaStore = {};',
+          `let mediaStore = ${serializedStore};`
+        );
+      }
+      const htmlContent = '<!DOCTYPE html>\n' + docClone.outerHTML;
+      const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'bai-1-giai-phau-be-mat-dau-co-khoang-mieng.html';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast('Đã xuất tệp HTML kèm toàn bộ hình ảnh đã chèn!');
+    });
+
+    // ==========================================
+    // 4. REAL-TIME KEYWORD SEARCH & HIGHLIGHT
+    // ==========================================
+    const searchInput = document.getElementById('globalSearch');
+    const clearSearchBtn = document.getElementById('clearSearchBtn');
+    const searchStatus = document.getElementById('searchStatus');
+
+    function removeHighlights(root) {
+      const marks = root.querySelectorAll('mark.search-hl');
+      marks.forEach(mark => {
+        const parent = mark.parentNode;
+        parent.replaceChild(document.createTextNode(mark.textContent), mark);
+        parent.normalize();
+      });
+    }
+
+    function highlightTerm(root, term) {
+      if (!term) return 0;
+      let count = 0;
+      const escaped = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const regex = new RegExp(`(${escaped})`, 'gi');
+
+      const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+        acceptNode(node) {
+          if (!node.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+          const tag = node.parentNode.nodeName;
+          if (['SCRIPT', 'STYLE', 'SVG', 'TEXT', 'TSPAN', 'BUTTON', 'INPUT'].includes(tag)) {
+            return NodeFilter.FILTER_REJECT;
+          }
+          return NodeFilter.FILTER_ACCEPT;
+        }
+      });
+
+      const textNodes = [];
+      let current;
+      while ((current = walker.nextNode())) textNodes.push(current);
+
+      textNodes.forEach(node => {
+        const text = node.nodeValue;
+        if (regex.test(text)) {
+          const span = document.createElement('span');
+          span.innerHTML = text.replace(regex, match => {
+            count++;
+            return `<mark class="search-hl">${match}</mark>`;
+          });
+          node.parentNode.replaceChild(span, node);
+        }
+      });
+      return count;
+    }
+
+    searchInput.addEventListener('input', e => {
+      const query = e.target.value.trim();
+      const sections = document.querySelectorAll('.searchable-section');
+
+      sections.forEach(sec => removeHighlights(sec));
+
+      if (!query) {
+        clearSearchBtn.classList.add('hidden');
+        searchStatus.classList.add('hidden');
+        return;
+      }
+
+      clearSearchBtn.classList.remove('hidden');
+      renderFaceRegions('all');
+
+      let totalMatches = 0;
+      let firstMark = null;
+      sections.forEach(sec => {
+        totalMatches += highlightTerm(sec, query);
+        if (!firstMark) firstMark = sec.querySelector('mark.search-hl');
+      });
+
+      searchStatus.classList.remove('hidden');
+      if (totalMatches > 0) {
+        searchStatus.textContent = `Tìm thấy ${totalMatches} kết quả khớp từ khóa`;
+        if (firstMark) {
+          firstMark.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      } else {
+        searchStatus.textContent = 'Không tìm thấy thuật ngữ phù hợp';
+      }
+    });
+
+    clearSearchBtn.addEventListener('click', () => {
+      searchInput.value = '';
+      searchInput.dispatchEvent(new Event('input'));
+    });
+
+    // ==========================================
+    // 5. MOBILE DRAWER NAVIGATION
+    // ==========================================
+    const sidebar = document.getElementById('sidebar');
+    const drawerOverlay = document.getElementById('drawerOverlay');
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const closeSidebarBtn = document.getElementById('closeSidebarBtn');
+
+    function openDrawer() {
+      sidebar.classList.remove('-translate-x-full');
+      drawerOverlay.classList.remove('hidden');
+    }
+
+    function closeDrawer() {
+      sidebar.classList.add('-translate-x-full');
+      drawerOverlay.classList.add('hidden');
+    }
+
+    mobileMenuBtn.addEventListener('click', openDrawer);
+    closeSidebarBtn.addEventListener('click', closeDrawer);
+    drawerOverlay.addEventListener('click', closeDrawer);
+
+    document.querySelectorAll('.nav-item').forEach(link => {
+      link.addEventListener('click', () => {
+        if (window.innerWidth < 1024) closeDrawer();
+      });
+    });
+
+    // Initialize Views
+    renderFaceRegions('all');
+    initMediaSlots();
+  </script>
+</body>
+</html>
