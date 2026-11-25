@@ -287,6 +287,33 @@
         console.error('Không tìm thấy file lessons.js. Hãy đảm bảo file lessons.js nằm cùng thư mục với index.html');
         window.LESSONS = [];
       }
+      // Bài 1 – Phẫu thuật Miệng & Hàm Mặt (trang bài giảng riêng: bai-1-giai-phau-be-mat.html)
+      if (!LESSONS.some(l => l.id === 'bai-1-giai-phau-be-mat')) {
+        LESSONS.unshift({
+          id: 'bai-1-giai-phau-be-mat',
+          specialty: 'pt-ham-mat',
+          title: 'Bài 1: Giải phẫu bề mặt vùng đầu cổ và khoang miệng',
+          chapter: 'Bài 1',
+          book: 'Bài giảng Phẫu thuật Miệng & Hàm Mặt',
+          hasDiagram: true,
+          tags: ['Giải phẫu bề mặt', 'Vùng đầu mặt', 'Vùng cổ', 'Hạch bạch huyết', 'Khoang miệng', 'Khẩu hầu'],
+          summary: 'Tổng quan giải phẫu bề mặt vùng đầu mặt (11 vùng), vùng cổ (mốc đường giữa, các tam giác cổ), hệ thống hạch bạch huyết đầu cổ, khoang miệng và khẩu hầu — nền tảng để thăm khám và lập kế hoạch phẫu thuật vùng miệng hàm mặt.',
+          keyPoints: [
+            'Giải phẫu bề mặt vùng Đầu Mặt được chia thành 11 vùng.',
+            'Vùng Cổ: xác định các mốc đường giữa và các tam giác cổ.',
+            'Hệ thống hạch bạch huyết vùng Đầu Cổ (khoảng 300 trên tổng ~800 hạch toàn cơ thể).',
+            'Khoang Miệng và Khẩu Hầu được phân ranh bởi rãnh tận của lưỡi.'
+          ],
+          customHtml: `
+            <div class="my-6">
+              <a href="bai-1-giai-phau-be-mat.html"
+                 class="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-5 py-3 rounded-xl bg-dental-600 hover:bg-dental-700 text-white text-sm font-semibold shadow-sm transition-colors">
+                Mở bài giảng đầy đủ: Bài 1 – Giải phẫu bề mặt
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+              </a>
+            </div>`
+        });
+      }
       renderFilterTabs();
       renderSpecialtyCards();
       renderLessons();
